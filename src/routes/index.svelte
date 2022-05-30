@@ -24,6 +24,7 @@
 			redraw();
 		});
 		document.getElementById('colorpicker').addEventListener('change', function () {
+			console.log("xd");
 			currentColor = this.value;
 		});
 		document.getElementById('bgcolorpicker').addEventListener('change', function () {
@@ -45,13 +46,13 @@
 		);
 		document.getElementById('eraser').addEventListener('click', eraser);
 		document.getElementById('clear').addEventListener('click', createCanvas);
-		document.getElementById('save').addEventListener('click', save);
-		document.getElementById('load').addEventListener('click', load);
-		document.getElementById('clearCache').addEventListener('click', function () {
-			localStorage.removeItem('savedCanvas');
-			linesArray = [];
-			console.log('Cache cleared!');
-		});
+		// document.getElementById('save').addEventListener('click', save);
+		// document.getElementById('load').addEventListener('click', load);
+		// document.getElementById('clearCache').addEventListener('click', function () {
+		// 	localStorage.removeItem('savedCanvas');
+		// 	linesArray = [];
+		// 	console.log('Cache cleared!');
+		// });
 
 		// REDRAW
 
@@ -83,8 +84,8 @@
 			canvas.id = 'canvas';
 			canvas.width = parseInt(document.getElementById('sizeX').value);
 			canvas.height = parseInt(document.getElementById('sizeY').value);
-			canvas.style.zIndex = 8;
-			canvas.style.position = 'absolute';
+			// canvas.style.zIndex = 8;
+			// canvas.style.position = 'absolute';
 			canvas.style.border = '1px solid';
 			ctx.fillStyle = currentBg;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -189,52 +190,54 @@
 	});
 </script>
 
-<div id="sidebar">
-	<div class="colorButtons">
+<div id="sidebar" class="flex gap-4">
+	<div class="">
 		<h3>Colour</h3>
-		<input type="color" id="colorpicker" value="#c81464" class="colorpicker" />
+		<input type="color" id="colorpicker" value="#c81464" class="" />
 	</div>
-	<div class="colorButtons">
+	<div class="">
 		<h3>Bg Color</h3>
-		<input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker" />
+		<input type="color" value="#ffffff" id="bgcolorpicker" class="" />
 	</div>
 
-	<div class="toolsButtons">
+	<div class="">
 		<h3>Tools</h3>
-		<button id="eraser" class="btn btn-default"
-			>➖<span class="glyphicon glyphicon-erase" aria-hidden="true" /></button
+		<button id="eraser" class=""
+			>➖<span class="" aria-hidden="true" /></button
 		>
-		<button id="clear" class="btn btn-danger"
-            >🚮<span class="glyphicon glyphicon-repeat" aria-hidden="true" /></button
+		<button id="clear" class=""
+            >🚮<span class="" aria-hidden="true" /></button
 		>
 	</div>
 
-	<div class="buttonSize">
+	<div class="">
 		<h3>Size (<span id="showSize">5</span>)</h3>
 		<input type="range" min="1" max="50" value="5" step="1" id="controlSize" />
 	</div>
 
-	<div class="canvasSize">
+	<div class="">
 		<h3>Canvas</h3>
-		<div class="input-group">
-			<span class="input-group-addon">X</span>
-			<input type="number" id="sizeX" class="form-control size" placeholder="sizeX" value="800" />
+		<div class="flex">
+			<div class="">
+				<label for="sizeX" class="">X</label>
+				<input type="number" id="sizeX" class="w-14" placeholder="sizeX" value="800" />
+			</div>
+			<div class="">
+				<label for="sizeY" class="">Y</label>
+				<input type="number" id="sizeY" class="w-14" placeholder="sizeY" value="800" />
+			</div>
+			<input type="button" class="" value="Update" id="canvasUpdate" />
 		</div>
-		<div class="input-group">
-			<span class="input-group-addon">Y</span>
-			<input type="number" id="sizeY" class="form-control size" placeholder="sizeY" value="800" />
-		</div>
-		<input type="button" class="updateSize btn btn-success" value="Update" id="canvasUpdate" />
 	</div>
-	<div class="Storage">
+	<!-- <div class="Storage">
 		<h3>Storage</h3>
-		<input type="button" value="Save" class="btn btn-warning" id="save" />
-		<input type="button" value="Load" class="btn btn-warning" id="load" />
-		<input type="button" value="Clear" class="btn btn-warning" id="clearCache" />
-	</div>
-	<div class="extra">
-		<h3>Extra</h3>
-		<a id="saveToImage" class="btn btn-warning">Download</a>
+		<input type="button" value="Save" class="" id="save" />
+		<input type="button" value="Load" class="" id="load" />
+		<input type="button" value="Clear" class="" id="clearCache" />
+	</div> -->
+	<div class="">
+		<!-- <h3>Extra</h3> -->
+		<a id="saveToImage" class="">Download</a>
 	</div>
 </div>
 <canvas id="canvas" />
