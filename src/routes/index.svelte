@@ -13,6 +13,9 @@
 		let currentColor = 'rgb(0,0,255)';
 		let currentBg = 'white';
 
+		let updateRate = 15;
+		let allowedToDraw = true;
+
 		// INITIAL LAUNCH
 
 		createCanvas();
@@ -161,11 +164,18 @@
 		// ON MOUSE MOVE
 
 		function mousemove(canvas, evt) {
-			if (isMouseDown) {
+			if (isMouseDown && allowedToDraw) {
+				allowedToDraw = false;
 				let currentPosition = getMousePos(canvas, evt);
 				ctx.lineTo(currentPosition.x, currentPosition.y);
 				ctx.stroke();
 				store(currentPosition.x, currentPosition.y, currentSize, currentColor);
+
+				console.log(linesArray);
+				setTimeout(() => {
+					allowedToDraw = true;
+					// console.log("XD");
+				}, 1000/updateRate);
 			}
 		}
 
@@ -242,4 +252,5 @@
 		</div>
 	</div>
 	<canvas id="canvas" class="m-2"></canvas>
+	<p id="linesDebug">xd</p>
 </div>
