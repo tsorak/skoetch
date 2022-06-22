@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+        integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+        crossorigin="anonymous"></script> -->
+</head>
+
+<body>
+
+
+    <script>
+        // const socket = io('127.0.0.1:8080');
+        // socket.emit("message", "bruh")
+
+        // const socket = new WebSocket('ws://127.0.0.1:8080');
+        // socket.addEventListener("message", (e) => {
+        //     console.log(e.data)
+        // });
+        // socket.addEventListener("close", (e) => {
+        //     console.dir(e)
+        // });
+        // socket.addEventListener("error", (err) => {
+        //     console.dir(err)
+        // });
+        // function sendMsg(msg) {
+        //     socket.send(msg);
+        //     return false;
+        // };
+
+        function logError(msg) {
+            console.log(msg);
+            Deno.exit(1);
+        }
+        function handleConnected(ws) {
+            console.log("Connected to server ...");
+            handleMessage(ws, "Welcome!");
+        }
+        function handleMessage(ws, data) {
+            console.log("SERVER >> " + data);
+            const reply = prompt("Client >> ") || "No reply";
+            if (reply === "exit") {
+                return ws.close();
+            }
+            ws.send(reply);
+        }
+        function handleError(e) {
+            console.log(e instanceof ErrorEvent ? e.message : e.type);
+        }
+        console.log("Connecting to server ...");
+        const ws = new WebSocket("ws://localhost:8080");
+        try {
+            ws.onopen = () => handleConnected(ws);
+            ws.onmessage = (m) => handleMessage(ws, m.data);
+            ws.onclose = () => logError("Disconnected from server ...");
+            ws.onerror = (e) => handleError(e);
+        } catch (err) {
+            logError("Failed to connect to server ... exiting");
+        }
+    </script>
+</body>
+
+</html>
