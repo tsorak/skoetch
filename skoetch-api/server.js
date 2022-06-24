@@ -11,24 +11,6 @@ const MESSAGE_TYPE = {
 }
 Object.freeze(MESSAGE_TYPE);
 
-// const pushLine = (line) => {
-// lines.push(line);
-//     pushNewLineToAllSockets(JSON.stringify(line));
-// }
-// const getLines = () => {
-//     return lines;
-// }
-// const pushNewLineToAllSockets = (line) => {
-//     // activeSockets.forEach(socket => {
-//     //     if (socket.readyState !== 1) return;
-//     //     socket.send(line);
-//     // })
-// }
-
-// function logError(msg) {
-//     console.log(msg);
-//     Deno.exit(1);
-// }
 function handleConnected(socket) {
     console.log("Connected to client ...");
     socket.id = crypto.randomUUID();
