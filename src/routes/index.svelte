@@ -2,15 +2,15 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		let socket = new WebSocket('ws://192.168.1.2:8080');
+		let socket = new WebSocket('ws://' + window.location.hostname + ':8080');
 
 		socket.addEventListener('message', (e) => {
 			const parsedData = JSON.parse(e.data);
-			// console.dir(parsedData);
+			console.dir(parsedData);
 			if (Array.isArray(parsedData)) {
 				initialRedraw(parsedData);
 			} else if (typeof parsedData === 'object') {
-				console.dir(linesArray[linesArray.length - 1]);
+				// console.dir(linesArray[linesArray.length - 1]);
 				drawIncomingLine(parsedData);
 			} else {
 				console.error('wtf is this? -->', parsedData);
@@ -54,7 +54,6 @@
 			// redraw();
 		});
 		document.getElementById('colorpicker').addEventListener('change', function () {
-			console.log('xd');
 			currentColor = this.value;
 		});
 		document.getElementById('bgcolorpicker').addEventListener('change', function () {
