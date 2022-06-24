@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std/http/mod.ts";
 
-const lines = [], activeSockets = [];
+const lines = [], activeSockets = new Map();
 
 const pushLine = (line) => {
     lines.push(line);
@@ -22,9 +22,16 @@ function logError(msg) {
 }
 function handleConnected(socket) {
     console.log("Connected to client ...");
-    activeSockets.push(socket);
+    socket.id = crypto.randomUUID();
+    activeSockets.set(socket.id, socket);
     socket.send(JSON.stringify(getLines()));
 }
+
+function handleDisconnect(socket) {
+    console.log("Disconnected from client ...");
+    activeSockets.delete(socket.id);
+}
+
 function handleMessage(ws, data) {
     const parsedData = JSON.parse(data);
     if (typeof parsedData === "object") {
@@ -47,7 +54,7 @@ async function reqHandler(req) {
     const { socket: ws, response } = Deno.upgradeWebSocket(req);
     ws.onopen = () => handleConnected(ws);
     ws.onmessage = (m) => handleMessage(ws, m.data);
-    ws.onclose = () => console.log("Disconnected from client ...");
+    ws.onclose = () => handleDisconnect(ws);
     ws.onerror = (e) => handleError(e);
     return response;
 }
