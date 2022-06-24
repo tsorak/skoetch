@@ -1,10 +1,7 @@
 import { serve } from "https://deno.land/std/http/mod.ts";
-import { helloWorld } from "./defaultCanvas.js";
 import * as room from "./roomHandler.js";
 import { removeSocket, storeSocket } from "./socketHandler.js";
-
-//SETUP DEFAULT ROOM
-room.newRoom("default", helloWorld);
+import * as defaultCanvas from "./defaultCanvas.js"
 
 const MESSAGE_TYPE = {
     NEWROOM: "NEW_ROOM",

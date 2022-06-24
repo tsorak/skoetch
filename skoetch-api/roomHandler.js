@@ -4,14 +4,12 @@ const roomData = new Map() // <ROOMNAME, data:[]>
 const roomClients = new Map() // <ROOMNAME, clients:[]> 
 
 function newRoom(requestedRoom, startingCanvas = []) {
-    if (roomData.has(requestedRoom)) { //SHOULDNT EVER BE TRIGGERED.
-        // joinRoom(requestedRoom, socketID);
-        console.log("this shouldn't have happened. 9 @ roomhandler.js")
-        Deno.exit(1);
+    if (roomData.has(requestedRoom)) {
+        return false; //ROOM EXISTS
     } else {
         roomData.set(requestedRoom, startingCanvas);
         roomClients.set(requestedRoom, []);
-        // console.dir(roomClients.get(requestedRoom));
+        return true; //ROOM CREATED
     }
 }
 
@@ -25,8 +23,8 @@ function joinRoom(requestedRoom, socketID) {
         activeSockets.get(socketID).send(JSON.stringify(roomData.get(requestedRoom)));
     }
 
-    console.dir(roomData)
-    console.dir(roomClients)
+    console.dir(requestedRoom + "'s entries: " + roomData.get(requestedRoom).length);
+    console.dir(roomClients.get(requestedRoom));
 }
 
 function leaveRoom(requestedRoom, socketID) {
@@ -46,12 +44,11 @@ function updateRoomData(roomID, line) {
     roomClients.get(roomID).forEach(socketID => {
         activeSockets.get(socketID).send(JSON.stringify(line));
     });
-
 }
 
 export {
-    newRoom,
     joinRoom,
+    newRoom,
     leaveRoom,
     updateRoomData
 }

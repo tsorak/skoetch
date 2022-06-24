@@ -1,3 +1,5 @@
+import { newRoom } from "./roomHandler.js";
+
 
 const helloWorld = [
     {
@@ -609,6 +611,10 @@ const helloWorld = [
     },
     {}
 ]
+
+//SETUP DEFAULT ROOM
+newRoom("default", helloWorld);
+console.log("Default room is set up.");
 
 export {
     helloWorld
