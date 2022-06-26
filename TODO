@@ -3,3 +3,4 @@ Each socket gets its own canvas? (overlap)
 DONE Map of rooms <roomID, [sockets]>
 
 Rebuild svelte app using Stores.
+    change mouse-events to pointer-events
