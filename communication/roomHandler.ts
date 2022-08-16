@@ -9,6 +9,7 @@ function newRoom(requestedRoom, startingCanvas = []) {
     } else {
         roomData.set(requestedRoom, startingCanvas);
         roomClients.set(requestedRoom, []);
+        console.dir(roomData)
         return true; //ROOM CREATED
     }
 }
@@ -46,9 +47,18 @@ function updateRoomData(roomID, line) {
     });
 }
 
+const roomExists = (roomID: string) => {
+    if (roomData.get(roomID)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export {
     joinRoom,
     newRoom,
     leaveRoom,
-    updateRoomData
+    updateRoomData,
+    roomExists
 }

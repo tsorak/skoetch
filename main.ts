@@ -9,10 +9,18 @@ import manifest from "./fresh.gen.ts";
 
 import { config, setup } from "@twind";
 import { virtualSheet } from "twind/sheets";
+import * as colors from "twind/colors";
 
 const sheet = virtualSheet();
 sheet.reset();
-setup({ ...config, sheet });
+const styleConfig = {
+  theme: {
+    extend: {
+      colors,
+    },
+  },
+};
+setup({ ...config, ...styleConfig, sheet });
 
 function render(ctx: RenderContext, render: InnerRenderFunction) {
   const snapshot = ctx.state.get("twind") as unknown[] | null;
