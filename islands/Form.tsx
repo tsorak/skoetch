@@ -2,20 +2,6 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import { tw } from "@twind";
-import { Handlers, PageProps } from "$fresh/server.ts";
-import { roomExists, newRoom } from "@/communication/roomHandler.ts"
-
-export const handler: Handlers = {
-    POST(req, _ctx) {
-        console.log("REEE");
-        
-        const reqRoomID = req.body.roomID;
-
-        if (!roomExists(reqRoomID)) return new Response("Room doesn't exist", {status: 418});
-        
-        return new Response(reqRoomID, {status: 303});
-    },
-};
 
 export default function Form(props: any) {
     const [errorMsg, setErrorMsg] = useState("");
@@ -43,12 +29,14 @@ export default function Form(props: any) {
     }
 
     async function fetchRoom(roomID: string) {
+        console.log("body:", roomID);
+        
         const response = fetch("/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({roomID})
+            body: JSON.stringify({roomID}),
         })
 
         await response;

@@ -12,11 +12,10 @@ import { roomExists } from "@/communication/roomHandler.ts"
 export const handler: Handlers = {
   GET(req, ctx) {
     const url = new URL(req.url);
-    const reqRoomID = url.searchParams.get("roomID") || "";
-    // const results = NAMES.filter((name) => name.includes(query));
-    // return ctx.render({ results, query });
-    if (!roomExists(reqRoomID)) return new Response("Room doesn't exist", {status: 418});
-    // return new Response("Room exists", {status: 200});
+    const roomID = url.pathname.split("/")[1];
+
+    if (!roomExists(roomID)) return Response.redirect(url.origin);
+
     return ctx.render();
   },
 };

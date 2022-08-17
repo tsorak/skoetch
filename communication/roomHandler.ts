@@ -9,7 +9,6 @@ function newRoom(requestedRoom, startingCanvas = []) {
     } else {
         roomData.set(requestedRoom, startingCanvas);
         roomClients.set(requestedRoom, []);
-        console.dir(roomData)
         return true; //ROOM CREATED
     }
 }
