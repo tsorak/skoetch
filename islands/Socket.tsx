@@ -20,7 +20,7 @@ export default function Socket(props: SocketProps) {
 
       socket.onopen = () => console.log("socket opened");
       socket.onmessage = (e) => {
-        let parsed: string;
+        let parsed: any;
         try {
           parsed = JSON.parse(e.data);
         } catch (error) {
@@ -29,7 +29,18 @@ export default function Socket(props: SocketProps) {
 
         console.log("socket message:", parsed);
 
-        setIncomingMessages(arr => [...arr, parsed]);
+        if (typeof parsed === "string") {
+          setIncomingMessages(arr => [...arr, parsed]);
+        } else {
+          try {
+            parsed.forEach(msg => {
+              setIncomingMessages(arr => [...arr, msg]);
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+
       };
       socket.onerror = (e) => console.log("socket errored:", e);
       socket.onclose = () => console.log("socket closed");
