@@ -4,7 +4,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 // import { IS_BROWSER } from "$fresh/runtime.ts";
 import Socket from "../islands/Socket.tsx";
 import { roomExists, joinRoom, updateRoomData } from "@/communication/roomHandler.ts"
-import { storeSocket, removeSocket } from "@/communication/socketHandler.ts"
+import { storeSocket, removeSocket, activeSockets } from "@/communication/socketHandler.ts"
 
 // interface Data {
 //   results: string[];
@@ -74,7 +74,7 @@ function handleMessage(socket, data) {
   } catch (error) {
     parsedData = data;
   }
-  console.log("Socket id (socket.id):", socket.id, "Socket room (socket.roomID):", socket.roomID);
+  // console.log("Socket id (socket.id):", socket.id, "Socket room (socket.roomID):", socket.roomID);
   if (typeof parsedData === "string") {
     updateRoomData(socket.roomID, parsedData);
   }
@@ -105,7 +105,10 @@ function handleMessage(socket, data) {
   //         }
   //     }
   // }
-  console.log("CLIENT >>", parsedData);
+  // const indexInActiveSockets = activeSockets.values().find(id => id === socket.id);
+  console.log("id[i]" + "indexInActiveSockets" + ">>", parsedData);
+  console.log(activeSockets.values().return().value());
+  
 }
 
 export default function RoomCanvasPage(props: PageProps) {
