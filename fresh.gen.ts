@@ -7,10 +7,11 @@ import * as $1 from "./routes/api/server.ts";
 import * as $2 from "./routes/index.tsx";
 import * as $3 from "./routes/room/[roomCode].tsx";
 import * as $4 from "./routes/tab.tsx";
-import * as $$0 from "./islands/Counter.tsx";
-import * as $$1 from "./islands/Form.tsx";
-import * as $$2 from "./islands/Socket.tsx";
-import * as $$3 from "./islands/Tab.tsx";
+import * as $$0 from "./islands/Canvas.tsx";
+import * as $$1 from "./islands/Counter.tsx";
+import * as $$2 from "./islands/Form.tsx";
+import * as $$3 from "./islands/Socket.tsx";
+import * as $$4 from "./islands/Tab.tsx";
 
 const manifest = {
   routes: {
@@ -21,10 +22,11 @@ const manifest = {
     "./routes/tab.tsx": $4,
   },
   islands: {
-    "./islands/Counter.tsx": $$0,
-    "./islands/Form.tsx": $$1,
-    "./islands/Socket.tsx": $$2,
-    "./islands/Tab.tsx": $$3,
+    "./islands/Canvas.tsx": $$0,
+    "./islands/Counter.tsx": $$1,
+    "./islands/Form.tsx": $$2,
+    "./islands/Socket.tsx": $$3,
+    "./islands/Tab.tsx": $$4,
   },
   baseUrl: import.meta.url,
 };

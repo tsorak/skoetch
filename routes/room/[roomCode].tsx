@@ -1,5 +1,6 @@
 /** @jsx h */
 import { h } from "preact";
+import { tw } from "@twind";
 import { Handlers, PageProps } from "$fresh/server.ts";
 // import { IS_BROWSER } from "$fresh/runtime.ts";
 import Socket from "@/islands/Socket.tsx";
@@ -116,8 +117,8 @@ function handleMessage(socket, data) {
 
 export default function RoomCanvasPage(props: PageProps) {
   return (
-  <div>
-    <p>Welcome to: {props.params.roomCode}</p>
+  <div class={tw`flex flex-col w-full h-screen items-center`}>
+    <h1 class={tw`mt-16 text-xl`}>Welcome to {props.params.roomCode}!</h1>
     <Socket roomID={props.params.roomCode} />
   </div>
   );
