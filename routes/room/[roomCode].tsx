@@ -106,8 +106,10 @@ function handleMessage(socket, data) {
   //     }
   // }
   // const indexInActiveSockets = activeSockets.values().find(id => id === socket.id);
-  console.log("id[i]" + "indexInActiveSockets" + ">>", parsedData);
-  // Object.keys()
+  const socketPos = [...activeSockets.keys()].indexOf(socket.id);
+    
+  console.log("{" + socket.roomID + "} [" + socketPos + "]>>", parsedData);
+  
   // console.log(activeSockets.values().return().value());
   
 }
