@@ -2,7 +2,7 @@
 import { h } from "preact";
 import { Handlers, PageProps } from "$fresh/server.ts";
 // import { IS_BROWSER } from "$fresh/runtime.ts";
-import Socket from "../islands/Socket.tsx";
+import Socket from "@/islands/Socket.tsx";
 import { roomExists, joinRoom, updateRoomData } from "@/communication/roomHandler.ts"
 import { storeSocket, removeSocket, activeSockets } from "@/communication/socketHandler.ts"
 
@@ -14,7 +14,7 @@ import { storeSocket, removeSocket, activeSockets } from "@/communication/socket
 export const handler: Handlers = {
   GET(req, ctx) {
     const url = new URL(req.url);
-    const roomID = url.pathname.split("/")[1];
+    const roomID = url.pathname.split("/")[2];
 
     if (!roomExists(roomID)) return Response.redirect(url.origin);
 
@@ -107,7 +107,8 @@ function handleMessage(socket, data) {
   // }
   // const indexInActiveSockets = activeSockets.values().find(id => id === socket.id);
   console.log("id[i]" + "indexInActiveSockets" + ">>", parsedData);
-  console.log(activeSockets.values().return().value());
+  // Object.keys()
+  // console.log(activeSockets.values().return().value());
   
 }
 

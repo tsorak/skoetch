@@ -41,8 +41,8 @@ export const handler: Handlers<Data> = {
     // if (config.roomID === "") return ctx.render({ roomID: config.roomID, status: config.status });
     // if (!roomExists(roomID)) return new Response("Room doesn't exist", {status: 418});
 
-    const redirectURL = url.origin + "/" + config.roomID;
-
+    const redirectURL = url.origin + "/room/" + config.roomID;
+    
     if (!roomExists(config.roomID)) {
       // console.log("roomExists:", roomExists(config.roomID));
       newRoom(config.roomID);
