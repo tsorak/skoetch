@@ -3,6 +3,11 @@ CHAT
     Add autoscroll
 
 CANVAS
+    Add a canvas for each connected socket? (overlay them) 
+    || have all sockets draw on the same canvas? (errors when multiple sockets are drawing at the same time?)
+
+    Canvas prop for lines
+
     POINTER
         Get pointer position over the canvas
-    
+        

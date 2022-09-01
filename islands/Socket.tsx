@@ -62,7 +62,10 @@ export default function Socket(props: SocketProps) {
 
   return (
     <div class={tw`flex`}>
-      <Canvas />
+      <div class={tw`flex border-1 border-gray-600`}>
+        <Canvas />
+      </div>
+      
       <div class={tw`max-w-min`}>
         <form id="form">
           <p>Send Message:</p>
