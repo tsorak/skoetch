@@ -62,7 +62,10 @@ export default function Socket(props: SocketProps) {
 
   return (
     <div class={tw`flex flex-none`}>
-      <Canvas />
+      <div class={tw`flex border-1 border-gray-600`}>
+        <Canvas />
+      </div>
+      
       <div class={tw`flex flex-col max-h-initial max-w-min justify-end`}>
         <div class={tw`flex flex-col grow-0 max-h-initial`}>
           {/* <p>Recieved Messages:</p> */}
