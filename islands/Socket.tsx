@@ -61,19 +61,19 @@ export default function Socket(props: SocketProps) {
   }
 
   return (
-    <div class={tw`flex`}>
+    <div class={tw`flex flex-none`}>
       <Canvas />
-      <div class={tw`max-w-min`}>
-        <form id="form">
-          <p>Send Message:</p>
-          <input class={tw`focus:outline-none border-2 border-gray-200 rounded`} type="text" name="clientMsg" autoComplete="off" autofocus value={outgoingMessage} />
-        </form>
-        <div>
-          <p>Recieved Messages:</p>
-          <ul class={tw`text-sm`}>
+      <div class={tw`flex flex-col max-h-initial max-w-min justify-end`}>
+        <div class={tw`flex flex-col grow-0 max-h-initial`}>
+          {/* <p>Recieved Messages:</p> */}
+          <ul class={tw`text-sm flex-none justify-end overflow-scroll`}>
             {incomingMessages.map((name) => <li key={name}>{name}</li>)}
           </ul>
         </div>
+        <form id="form">
+          {/* <p>Send Message:</p> */}
+          <input class={tw`focus:outline-none border-2 border-gray-200 rounded`} type="text" name="clientMsg" autoComplete="off" autofocus value={outgoingMessage} />
+        </form>
       </div>
     </div>
   );
