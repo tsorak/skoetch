@@ -1,3 +1,6 @@
+SOCKET
+    Client socket isn't starting [window.onload]
+
 CHAT
     Limit chat height
     Add autoscroll
