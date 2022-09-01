@@ -1,0 +1,8 @@
+CHAT
+    Limit chat height
+    Add autoscroll
+
+CANVAS
+    POINTER
+        Get pointer position over the canvas
+    
