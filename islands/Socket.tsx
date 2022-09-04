@@ -1,6 +1,6 @@
 /** @jsx h */
 import { h } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import Canvas from "./Canvas.tsx";
 // import { SELF, IS_BROWSER } from "$fresh/runtime.ts";
 import { tw } from "@twind";
@@ -12,13 +12,22 @@ interface SocketProps {
 export default function Socket(props: SocketProps) {
   const [incomingMessages, setIncomingMessages] = useState([]);
   const [outgoingMessage, setOutgoingMessage] = useState("");
-  
+  const form = useRef()
   let socket: WebSocket;
 
-  window.onload = () => {
+  const island = {
+    hasMounted: false,
+  }
+  // useEffect should only be run on mount
+  useEffect(() => {
+    if (!island.hasMounted) return;
+    console.log("%cSocket %cMounted", "color: #fff", "color: #0f0");
+
+    form.current.addEventListener("submit", sendMsg);
+    
     try {
       socket = new WebSocket("ws://" + location.host + location.pathname);
-
+  
       socket.onopen = () => console.log("socket opened");
       socket.onmessage = (e) => {
         let parsed: any;
@@ -27,9 +36,9 @@ export default function Socket(props: SocketProps) {
         } catch (error) {
           parsed = e.data;
         }
-
+  
         console.log("socket message:", parsed);
-
+  
         if (typeof parsed === "string") {
           setIncomingMessages(arr => [...arr, parsed]);
         } else {
@@ -41,23 +50,22 @@ export default function Socket(props: SocketProps) {
             console.log(error);
           }
         }
-
+  
       };
       socket.onerror = (e) => console.log("socket errored:", e);
       socket.onclose = () => console.log("socket closed");
-
-      const form = document.getElementById("form");
-      form?.addEventListener("submit", sendMsg);
-
-      function sendMsg(e: any) {
-        e.preventDefault();
-        const msg = e.srcElement.clientMsg.value;
-        if (!msg) return;
-        socket.send(msg);
-      }
+  
     } catch (error) {
       console.log(error);
     }
+  }, [island.hasMounted])
+  island.hasMounted = true;
+
+  function sendMsg(e) {
+    e.preventDefault();
+    const msg = e.srcElement.clientMsg.value;
+    if (!msg) return;
+    socket.send(msg);
   }
 
   return (
@@ -73,7 +81,7 @@ export default function Socket(props: SocketProps) {
             {incomingMessages.map((name) => <li key={name}>{name}</li>)}
           </ul>
         </div>
-        <form id="form">
+        <form ref={form}>
           {/* <p>Send Message:</p> */}
           <input class={tw`focus:outline-none border-2 border-gray-200 rounded`} type="text" name="clientMsg" autoComplete="off" autofocus value={outgoingMessage} />
         </form>
