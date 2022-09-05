@@ -1,6 +1,7 @@
 import { activeSockets } from "./socketHandler.ts";
 
-const roomData = new Map() // <ROOMNAME, data:[]> 
+const roomData = new Map() // <ROOMNAME, data:[]>
+const roomChat = new Map()
 const roomClients = new Map() // <ROOMNAME, clients:[]> 
 
 function newRoom(requestedRoom, startingCanvas = []) {
@@ -39,9 +40,18 @@ function leaveRoom(requestedRoom, socketID) {
 
 function updateRoomData(roomID, data) {
     //CHECK IF CHAT MESSAGE IS PARSE-ABLE AS AN OBJECT, if not it's a chat message
-    
-    
-    roomData.get(roomID).push(data);
+    let parsedData;
+    try {
+        parsedData = JSON.parse(data);
+    } catch (_error) {
+        parsedData = data;
+    }
+    // console.log("Socket id (socket.id):", socket.id, "Socket room (socket.roomID):", socket.roomID);
+    if (typeof parsedData === "string") {
+        roomChat.get(roomID).push(parsedData);
+    } else if (typeof parsedData === "object") {
+        roomData.get(roomID).push(parsedData);
+    }
 
     //UPDATE ALL CLIENTS
     roomClients.get(roomID).forEach(socketID => {

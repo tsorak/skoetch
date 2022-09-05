@@ -13,8 +13,21 @@ CANVAS
 
     POINTER
         Get pointer position over the canvas
+
+        ?
+        onMouseDown
+            
+            if !wait
+                wait = true
+                getPointerPosition
+                timeout x: ms --> wait = false
+
+
+
         
 
 
 80 roomCode.tsx
 42 roomHandler.ts
+
+Går vi endast igenom javascript eller pratar vi även om Typescript med tanke på typer 

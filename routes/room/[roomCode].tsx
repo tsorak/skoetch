@@ -70,16 +70,8 @@ function handleDisconnect(socket) {
 }
 
 function handleMessage(socket, data) {
-  let parsedData;
-  try {
-    parsedData = JSON.parse(data);
-  } catch (error) {
-    parsedData = data;
-  }
-  // console.log("Socket id (socket.id):", socket.id, "Socket room (socket.roomID):", socket.roomID);
-  if (typeof parsedData === "string") {
-    updateRoomData(socket.roomID, parsedData);
-  }
+  updateRoomData(socket.roomID, data);
+
   // if (typeof parsedData === "object") {
   //     if (!parsedData.type) {
   //         //Default message is treated as a line object
