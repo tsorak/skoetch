@@ -37,12 +37,15 @@ function leaveRoom(requestedRoom, socketID) {
     }
 }
 
-function updateRoomData(roomID, line) {
-    roomData.get(roomID).push(line);
+function updateRoomData(roomID, data) {
+    //CHECK IF CHAT MESSAGE IS PARSE-ABLE AS AN OBJECT, if not it's a chat message
+    
+    
+    roomData.get(roomID).push(data);
 
     //UPDATE ALL CLIENTS
     roomClients.get(roomID).forEach(socketID => {
-        activeSockets.get(socketID).send(JSON.stringify(line));
+        activeSockets.get(socketID).send(JSON.stringify(data));
     });
 }
 

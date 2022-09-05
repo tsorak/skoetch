@@ -74,13 +74,13 @@ export default function Socket(props: SocketProps) {
         <Canvas />
       </div>
       
-      <div class={tw`flex flex-col max-h-initial max-w-min justify-end`}>
-        <div class={tw`flex flex-col grow-0 max-h-initial`}>
+      <div class={tw`flex flex-col max-h-initial max-w-min place-content-stretch`}>
+        {/* <div class={tw`flex flex-col grow-0 h-full`}> */}
           {/* <p>Recieved Messages:</p> */}
-          <ul class={tw`text-sm flex-none justify-end overflow-scroll`}>
+          <ul class={tw`text-sm flex-none justify-end overflow-y-scroll`}>
             {incomingMessages.map((name) => <li key={name}>{name}</li>)}
           </ul>
-        </div>
+        {/* </div> */}
         <form ref={form}>
           {/* <p>Send Message:</p> */}
           <input class={tw`focus:outline-none border-2 border-gray-200 rounded`} type="text" name="clientMsg" autoComplete="off" autofocus value={outgoingMessage} />

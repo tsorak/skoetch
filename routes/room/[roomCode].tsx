@@ -17,6 +17,7 @@ export const handler: Handlers = {
     const url = new URL(req.url);
     const roomID = url.pathname.split("/")[2];
 
+    //redirect any request if the room does not exist
     if (!roomExists(roomID)) return Response.redirect(url.origin);
 
     let response: Response, socket: WebSocket;
