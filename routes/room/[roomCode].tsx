@@ -70,7 +70,7 @@ function handleDisconnect(socket) {
 }
 
 function handleMessage(socket, data) {
-  updateRoomData(socket.roomID, data);
+  const parsedData = updateRoomData(socket.roomID, data);
 
   // if (typeof parsedData === "object") {
   //     if (!parsedData.type) {

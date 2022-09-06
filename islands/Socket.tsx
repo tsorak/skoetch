@@ -10,6 +10,7 @@ interface SocketProps {
 }
 
 export default function Socket(props: SocketProps) {
+  const [lastCanvasObject, setLastCanvasObject] = useState({})
   const [incomingMessages, setIncomingMessages] = useState([]);
   const [outgoingMessage, setOutgoingMessage] = useState("");
   const form = useRef()
@@ -71,7 +72,7 @@ export default function Socket(props: SocketProps) {
   return (
     <div class={tw`flex flex-none`}>
       <div class={tw`flex border-1 border-gray-600`}>
-        <Canvas />
+        <Canvas lastCanvasObject={lastCanvasObject} />
       </div>
       
       <div class={tw`flex flex-col max-h-initial max-w-min place-content-stretch`}>

@@ -1,8 +1,8 @@
 /** @jsx h */
 import { h } from "preact";
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 // import { SELF, IS_BROWSER } from "$fresh/runtime.ts";
-import { tw } from "@twind";
+// import { tw } from "@twind";
 
 // interface CanvasProps {
     
@@ -16,6 +16,8 @@ interface Line {
 }
 
 export default function Canvas(props: any) {
+
+    console.log(props);
 
     let cvs: any;
 
@@ -46,22 +48,33 @@ export default function Canvas(props: any) {
         }
     }
 
-    window.onload = () => {
+    const island = {
+        hasMounted: false,
+    }
+
+    useEffect(() => {
+        if (!island.hasMounted) return;
+        console.log("%cCanvas %cMounted", "color: #fff", "color: #0f0");
+
         const canvas = document.getElementById("cvs");
         if (!canvas) return;
         cvs = canvas.getContext("2d");
+        function paint(event: PointerEvent) {
+            console.log("painting", event);
+            const bounds = canvas.getBoundingClientRect();
+            const x = event.clientX - bounds.left;
+            const y = event.clientY - bounds.top;
+            storeLine(x, y);
+        }
         canvas.onpointerdown = function(event) {
             // retarget all pointer events (until pointerup) to cvs
             canvas.setPointerCapture(event.pointerId);
-          
+            paint(event);
+            
             // start tracking pointer moves
             canvas.onpointermove = function(event) {
                 // Get pointer position and store coordinates
-                console.log("painting", event);
-                const bounds = canvas.getBoundingClientRect();
-				const x = event.clientX - bounds.left;
-				const y = event.clientY - bounds.top;
-                storeLine(x, y);
+                paint(event);
             };
           
             // on pointer up finish tracking pointer moves
@@ -69,9 +82,11 @@ export default function Canvas(props: any) {
                 canvas.onpointermove = null;
                 canvas.onpointerup = null;
                 // ...also process the "drag end" if needed
+                storeLine({})
             };
         };
-    };
+    }, [island.hasMounted])
+    island.hasMounted = true;
 
     return (
         <canvas id="cvs" width={width} height={height} />

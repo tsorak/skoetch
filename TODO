@@ -23,7 +23,10 @@ CANVAS
                 timeout x: ms --> wait = false
 
 
-
+Client
+    on initial connect
+        populate chat 
+        populate canvas
         
 
 

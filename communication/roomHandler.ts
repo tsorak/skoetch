@@ -9,6 +9,7 @@ function newRoom(requestedRoom, startingCanvas = []) {
         return false; //ROOM EXISTS
     } else {
         roomData.set(requestedRoom, startingCanvas);
+        roomChat.set(requestedRoom, []);
         roomClients.set(requestedRoom, []);
         return true; //ROOM CREATED
     }
@@ -21,21 +22,19 @@ function joinRoom(requestedRoom, socketID) {
     } else {
         roomClients.get(requestedRoom).push(socketID);
         //SEND CURRENT ROOM DATA
-        activeSockets.get(socketID).send(JSON.stringify(roomData.get(requestedRoom)));
+        activeSockets.get(socketID).send(JSON.stringify([roomData.get(requestedRoom), roomChat.get(requestedRoom)]));
     }
 
     console.dir(requestedRoom + "'s entries: " + roomData.get(requestedRoom).length);
+    console.dir(requestedRoom + "'s chat: " + roomChat.get(requestedRoom).length);
     console.dir(roomClients.get(requestedRoom));
 }
 
 function leaveRoom(requestedRoom, socketID) {
-    if (!roomData.has(requestedRoom) && !roomClients.has(requestedRoom)) {
-        return;
-    } else {
-        const clientsConnectedToRoom = roomClients.get(requestedRoom);
-        clientsConnectedToRoom.splice(clientsConnectedToRoom.indexOf(socketID), 1);
-        // roomClients.set(requestedRoom, clientsConnectedToRoom);
-    }
+    if (!roomData.has(requestedRoom) && !roomClients.has(requestedRoom)) return;
+    const clientsConnectedToRoom = roomClients.get(requestedRoom);
+    clientsConnectedToRoom.splice(clientsConnectedToRoom.indexOf(socketID), 1);
+    // roomClients.set(requestedRoom, clientsConnectedToRoom);
 }
 
 function updateRoomData(roomID, data) {
@@ -57,6 +56,8 @@ function updateRoomData(roomID, data) {
     roomClients.get(roomID).forEach(socketID => {
         activeSockets.get(socketID).send(JSON.stringify(data));
     });
+
+    return parsedData;
 }
 
 const roomExists = (roomID: string) => {
