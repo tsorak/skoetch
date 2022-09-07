@@ -14,7 +14,8 @@ export default function Socket(props: SocketProps) {
   const [incomingMessages, setIncomingMessages] = useState([]);
   const [outgoingMessage, setOutgoingMessage] = useState("");
   const form = useRef()
-  let socket: WebSocket;
+  // let socket: WebSocket;
+  const socket = useRef(null)
 
   const island = {
     hasMounted: false,
@@ -27,10 +28,10 @@ export default function Socket(props: SocketProps) {
     form.current.addEventListener("submit", sendMsg);
     
     try {
-      socket = new WebSocket("ws://" + location.host + location.pathname);
+      socket.current = new WebSocket("ws://" + location.host + location.pathname);
   
-      socket.onopen = () => console.log("socket opened");
-      socket.onmessage = (e) => {
+      socket.current.onopen = () => console.log("socket opened");
+      socket.current.onmessage = (e) => {
         let parsed: any;
         try {
           parsed = JSON.parse(e.data);
@@ -41,20 +42,22 @@ export default function Socket(props: SocketProps) {
         console.log("socket message:", parsed);
   
         if (typeof parsed === "string") {
-          setIncomingMessages(arr => [...arr, parsed]);
+          // setIncomingMessages(arr => [...arr, parsed]);
+          updateChat(parsed);
         } else {
-          try {
-            parsed.forEach(msg => {
-              setIncomingMessages(arr => [...arr, msg]);
-            });
-          } catch (error) {
-            console.log(error);
-          }
+          updateCanvas(parsed);
+          // try {
+          //   parsed.forEach(msg => {
+          //     setIncomingMessages(arr => [...arr, msg]);
+          //   });
+          // } catch (error) {
+          //   console.log(error);
+          // }
         }
   
       };
-      socket.onerror = (e) => console.log("socket errored:", e);
-      socket.onclose = () => console.log("socket closed");
+      socket.current.onerror = (e) => console.log("socket errored:", e);
+      socket.current.onclose = () => console.log("socket closed");
   
     } catch (error) {
       console.log(error);
@@ -66,13 +69,13 @@ export default function Socket(props: SocketProps) {
     e.preventDefault();
     const msg = e.srcElement.clientMsg.value;
     if (!msg) return;
-    socket.send(msg);
+    socket.current.send(msg);
   }
 
   return (
     <div class={tw`flex flex-none`}>
       <div class={tw`flex border-1 border-gray-600`}>
-        <Canvas lastCanvasObject={lastCanvasObject} />
+        <Canvas lastCanvasObject={lastCanvasObject} socket={socket} />
       </div>
       
       <div class={tw`flex flex-col max-h-initial max-w-min place-content-stretch`}>
