@@ -27,6 +27,8 @@ Client
     on initial connect
         populate chat 
         populate canvas
+
+    we can only draw a line if we have two or more points
         
 
 

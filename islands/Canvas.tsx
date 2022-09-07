@@ -27,7 +27,8 @@ export default function Canvas(props: any) {
     const [brushSize, setBrushSize] = useState(1);
     const [brushColor, setBrushColor] = useState("#00f");
 
-    const lines: [Line] = [{x: 0, y: 0, size: 1, color: "#fff"}];
+    // const lines: [Line] = [{x: 0, y: 0, size: 1, color: "#fff"}];
+    const lines = [{}]
 
     const storeLine = (x: number, y: number) => {
         lines.push({ x, y, size: brushSize, color: brushColor});
@@ -35,8 +36,9 @@ export default function Canvas(props: any) {
     }
 
     const render = (lines: [Line]) => {
+        if (lines.length < 2) return console.log("Not enough points to render a line");
         for (let i = 1; i < lines.length; i++) {
-            console.log(cvs);
+            // console.log(cvs);
             
             cvs.beginPath();
             cvs.moveTo(lines[i - 1].x, lines[i - 1].y);
@@ -68,13 +70,36 @@ export default function Canvas(props: any) {
         }
         canvas.onpointerdown = function(event) {
             // retarget all pointer events (until pointerup) to cvs
-            canvas.setPointerCapture(event.pointerId);
+            // canvas.setPointerCapture(event.pointerId);
             paint(event);
             
             // start tracking pointer moves
+            // let wait = false;
+            // if (!wait) {
+            //     wait = true;
+            //     canvas.onpointermove = function(event) {
+            //         // Get pointer position and store coordinates
+            //         paint(event);
+            //     };
+
+            //     setTimeout(() => {
+            //         wait = false;
+            //         canvas.onpointermove = null;
+            //     }, 100);
+            // }
+            let wait = false;
             canvas.onpointermove = function(event) {
+                if (wait) return;
                 // Get pointer position and store coordinates
-                paint(event);
+
+                if (!wait) {
+                    wait = true;
+                    paint(event);
+
+                    setTimeout(() => {
+                        wait = false;
+                    }, 50);
+                }
             };
           
             // on pointer up finish tracking pointer moves
