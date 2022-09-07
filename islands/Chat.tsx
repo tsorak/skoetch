@@ -14,14 +14,13 @@ interface Chat {
 }
 
 
-export default function Chat(props: Chat) {
+export default function Chat(props: any) {
 
     console.log(props);
+    const { sendMsg, incMsgs } = props;
+    const [outMsg, setOutMsg] = useState("");
 
     const form = useRef()
-    const { socket } = props;
-
-    console.log(socket);
 
     const island = {
         hasMounted: false,
@@ -36,12 +35,12 @@ export default function Chat(props: Chat) {
     }, [island.hasMounted])
     island.hasMounted = true;
 
-    function sendMsg(e) {
-        e.preventDefault();
-        const msg = e.srcElement.clientMsg.value;
-        if (!msg) return;
-        socket.current.send(msg);
-    }
+    // function sendMsg(e) {
+    //     e.preventDefault();
+    //     const msg = e.srcElement.clientMsg.value;
+    //     if (!msg) return;
+    //     socket.current.send(msg);
+    // }
 
     return (
         <>
@@ -49,7 +48,7 @@ export default function Chat(props: Chat) {
                 {/* {incomingMessages.map((name) => <li key={name}>{name}</li>)} */}
             </ul>
             <form ref={form}>
-                <input class={tw`focus:outline-none border-2 border-gray-200 rounded`} type="text" name="clientMsg" autoComplete="off" autofocus value={" "} />
+                <input class={tw`focus:outline-none border-2 border-gray-200 rounded`} type="text" name="clientMsg" autoComplete="off" autofocus value={outMsg} />
             </form>
         </>
     );
