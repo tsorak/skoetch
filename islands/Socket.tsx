@@ -25,8 +25,6 @@ export default function Socket(props: SocketProps) {
   useEffect(() => {
     if (!island.hasMounted) return;
     console.log("%cSocket %cMounted", "color: #fff", "color: #0f0");
-
-    
     
     try {
       socket.current = new WebSocket("ws://" + location.host + location.pathname);
@@ -49,7 +47,7 @@ export default function Socket(props: SocketProps) {
           case "object":
             //single paint object
             //we dont want solo paint objects at all.
-
+            setRecievedLines(arr => [...arr, parsed]);
             break;
           case "array":
             //multiple paint objects or chat messages
@@ -111,8 +109,8 @@ export default function Socket(props: SocketProps) {
     socket.current.send(msg);
   }
 
-  function sendLine(line: unknown) {
-    socket.current.send(line);
+  function sendLine(line) {    
+    socket.current.send(JSON.stringify(line));
   }
 
   return (

@@ -51,10 +51,10 @@ function updateRoomData(roomID, data) {
     } else if (typeof parsedData === "object") {
         roomData.get(roomID).push(parsedData);
     }
-
+    
     //UPDATE ALL CLIENTS
     roomClients.get(roomID).forEach(socketID => {
-        activeSockets.get(socketID).send(JSON.stringify(data));
+        activeSockets.get(socketID).send(JSON.stringify(parsedData));
     });
 
     return parsedData;
