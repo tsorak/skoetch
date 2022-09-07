@@ -17,8 +17,10 @@ interface Chat {
 export default function Chat(props: any) {
 
     console.log(props);
-    const { sendMsg, incMsgs } = props;
+    const { sendMsg, recievedMsgs } = props;
     const [outMsg, setOutMsg] = useState("");
+
+    // console.log(recievedMsgs[0])
 
     const form = useRef()
 
@@ -35,17 +37,10 @@ export default function Chat(props: any) {
     }, [island.hasMounted])
     island.hasMounted = true;
 
-    // function sendMsg(e) {
-    //     e.preventDefault();
-    //     const msg = e.srcElement.clientMsg.value;
-    //     if (!msg) return;
-    //     socket.current.send(msg);
-    // }
-
     return (
         <>
             <ul class={tw`text-sm flex-none justify-end overflow-y-scroll`}>
-                {/* {incomingMessages.map((name) => <li key={name}>{name}</li>)} */}
+                {recievedMsgs.map((msg: string) => <li key={msg}>{msg}</li>)}
             </ul>
             <form ref={form}>
                 <input class={tw`focus:outline-none border-2 border-gray-200 rounded`} type="text" name="clientMsg" autoComplete="off" autofocus value={outMsg} />

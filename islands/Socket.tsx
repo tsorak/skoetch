@@ -12,8 +12,8 @@ interface SocketProps {
 }
 
 export default function Socket(props: SocketProps) {
-  const [lastCanvasObject, setLastCanvasObject] = useState({})
-  const [incomingMessages, setIncomingMessages] = useState([]);
+  const [recievedLines, setRecievedLines] = useState([]);
+  const [recievedMsgs, setRecievedMsgs] = useState([]);
   // const [outgoingMessage, setOutgoingMessage] = useState("");
   // let socket: WebSocket;
   const socket = useRef(null)
@@ -39,13 +39,12 @@ export default function Socket(props: SocketProps) {
         } catch (error) {
           parsed = e.data;
         }
-  
         console.log("socket message:", parsed);
 
         switch (getType(parsed)) {
           case "string":
-            //Chat msg
-
+            //chat msg
+            setRecievedMsgs(arr => [...arr, parsed]);
             break;
           case "object":
             //single paint object
@@ -54,17 +53,31 @@ export default function Socket(props: SocketProps) {
             break;
           case "array":
             //multiple paint objects or chat messages
-            if (getType(parsed[0]) === "string") {
-              //chat messages
-              
-            } else {
-              //canvas points
+            switch (getType(parsed[0])) {
+              case "string":
+                //chat messages
+                parsed.forEach(msg => {
+                  setRecievedMsgs(arr => [...arr, msg]);
+                });
 
+                break;
+              case "object":
+                //canvas points
+                parsed.forEach(line => {
+                  setRecievedLines(arr => [...arr, line]);
+                });
+                break;
+              case "array":
+                //initial room data
+                setRecievedLines(arr => [...arr, ...parsed[0]]);
+                setRecievedMsgs(arr => [...arr, ...parsed[1]]);
+                break;
+              default:
+                throw new Error("invalid socket message type");
             }
-
             break;
           default:
-            break;
+            throw new Error("invalid socket message type");
         }
   
         // if (typeof parsed === "string") {
@@ -90,7 +103,7 @@ export default function Socket(props: SocketProps) {
     }
   }, [island.hasMounted])
   island.hasMounted = true;
-
+  
   function sendMsg(e) {
     e.preventDefault();
     const msg = e.srcElement.clientMsg.value;
@@ -98,14 +111,18 @@ export default function Socket(props: SocketProps) {
     socket.current.send(msg);
   }
 
+  function sendLine(line: unknown) {
+    socket.current.send(line);
+  }
+
   return (
     <div class={tw`flex flex-none`}>
       <div class={tw`flex border-1 border-gray-600`}>
-        <Canvas lastCanvasObject={lastCanvasObject} socket={socket} />
+        <Canvas sendLine={sendLine} recievedLines={recievedLines} />
       </div>
       
-      <div class={tw`flex flex-col max-h-initial max-w-min place-content-stretch`}>
-        <Chat sendMsg={sendMsg} />
+      <div class={tw`flex flex-col h-auto max-w-min place-content-stretch`}>
+        <Chat sendMsg={sendMsg} recievedMsgs={recievedMsgs} />
       </div>
     </div>
   );
