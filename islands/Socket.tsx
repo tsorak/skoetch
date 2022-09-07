@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import Canvas from "./Canvas.tsx";
 // import { SELF, IS_BROWSER } from "$fresh/runtime.ts";
 import { tw } from "@twind";
+import Chat from "./Chat.tsx";
 
 interface SocketProps {
   roomID: string;
@@ -13,7 +14,6 @@ export default function Socket(props: SocketProps) {
   const [lastCanvasObject, setLastCanvasObject] = useState({})
   const [incomingMessages, setIncomingMessages] = useState([]);
   const [outgoingMessage, setOutgoingMessage] = useState("");
-  const form = useRef()
   // let socket: WebSocket;
   const socket = useRef(null)
 
@@ -25,7 +25,7 @@ export default function Socket(props: SocketProps) {
     if (!island.hasMounted) return;
     console.log("%cSocket %cMounted", "color: #fff", "color: #0f0");
 
-    form.current.addEventListener("submit", sendMsg);
+    
     
     try {
       socket.current = new WebSocket("ws://" + location.host + location.pathname);
@@ -41,19 +41,19 @@ export default function Socket(props: SocketProps) {
   
         console.log("socket message:", parsed);
   
-        if (typeof parsed === "string") {
-          // setIncomingMessages(arr => [...arr, parsed]);
-          updateChat(parsed);
-        } else {
-          updateCanvas(parsed);
-          // try {
-          //   parsed.forEach(msg => {
-          //     setIncomingMessages(arr => [...arr, msg]);
-          //   });
-          // } catch (error) {
-          //   console.log(error);
-          // }
-        }
+        // if (typeof parsed === "string") {
+        //   // setIncomingMessages(arr => [...arr, parsed]);
+        //   updateChat(parsed);
+        // } else {
+        //   updateCanvas(parsed);
+        //   // try {
+        //   //   parsed.forEach(msg => {
+        //   //     setIncomingMessages(arr => [...arr, msg]);
+        //   //   });
+        //   // } catch (error) {
+        //   //   console.log(error);
+        //   // }
+        // }
   
       };
       socket.current.onerror = (e) => console.log("socket errored:", e);
@@ -65,13 +65,6 @@ export default function Socket(props: SocketProps) {
   }, [island.hasMounted])
   island.hasMounted = true;
 
-  function sendMsg(e) {
-    e.preventDefault();
-    const msg = e.srcElement.clientMsg.value;
-    if (!msg) return;
-    socket.current.send(msg);
-  }
-
   return (
     <div class={tw`flex flex-none`}>
       <div class={tw`flex border-1 border-gray-600`}>
@@ -79,16 +72,7 @@ export default function Socket(props: SocketProps) {
       </div>
       
       <div class={tw`flex flex-col max-h-initial max-w-min place-content-stretch`}>
-        {/* <div class={tw`flex flex-col grow-0 h-full`}> */}
-          {/* <p>Recieved Messages:</p> */}
-          <ul class={tw`text-sm flex-none justify-end overflow-y-scroll`}>
-            {incomingMessages.map((name) => <li key={name}>{name}</li>)}
-          </ul>
-        {/* </div> */}
-        <form ref={form}>
-          {/* <p>Send Message:</p> */}
-          <input class={tw`focus:outline-none border-2 border-gray-200 rounded`} type="text" name="clientMsg" autoComplete="off" autofocus value={outgoingMessage} />
-        </form>
+        <Chat socket={socket}/>
       </div>
     </div>
   );

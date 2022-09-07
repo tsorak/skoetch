@@ -4,6 +4,7 @@ SOCKET
 CHAT
     Limit chat height
     Add autoscroll
+    Create island
 
 CANVAS
     Add a canvas for each connected socket? (overlay them) 
