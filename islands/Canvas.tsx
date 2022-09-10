@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "preact/hooks";
     
 // }
 
-interface Line {
+interface Point {
     x: number,
     y: number,
     size: number,
@@ -31,16 +31,16 @@ export default function Canvas(props: any) {
     const [brushColor, setBrushColor] = useState("#00f");
 
     // const lines: [Line] = [{x: 0, y: 0, size: 1, color: "#fff"}];
-    const linesStorage = [{}]
+    // const linesStorage = [{}];
 
-    const storeLine = (x: number, y: number) => {
-        const line = { x, y, size: brushSize, color: brushColor};
+    const storeLine = (point: Point | Record<never, never>) => {
+        const data = { ...point };
         // linesStorage.push(line);
         // render(linesStorage)
-        sendLine(line);
+        sendLine(data);
     }
 
-    const render = (lines: [Line]) => {
+    const render = (lines: [Point]) => {
         if (lines.length < 2) return console.log("Not enough points to render a line");
         for (let i = 1; i < lines.length; i++) {
             // console.log(cvs.current);
@@ -67,7 +67,7 @@ export default function Canvas(props: any) {
             const bounds = canvas.getBoundingClientRect();
             const x = event.clientX - bounds.left;
             const y = event.clientY - bounds.top;
-            storeLine(x, y);
+            storeLine({ x, y, size: brushSize, color: brushColor });
         }
         canvas.onpointerdown = function(event) {
             // retarget all pointer events (until pointerup) to cvs
@@ -102,7 +102,7 @@ export default function Canvas(props: any) {
                     }, 50);
                 }
             };
-          
+
             // on pointer up finish tracking pointer moves
             canvas.onpointerup = function(event) {
                 canvas.onpointermove = null;
