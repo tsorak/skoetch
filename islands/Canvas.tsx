@@ -1,5 +1,3 @@
-/** @jsx h */
-import { h } from "preact";
 import { useState, useEffect, useRef } from "preact/hooks";
 // import { SELF, IS_BROWSER } from "$fresh/runtime.ts";
 // import { tw } from "@twind";
@@ -45,7 +43,7 @@ export default function Canvas(props: any) {
     const render = (lines: [Line]) => {
         if (lines.length < 2) return console.log("Not enough points to render a line");
         for (let i = 1; i < lines.length; i++) {
-            console.log(cvs.current);
+            // console.log(cvs.current);
             
             cvs.current.beginPath();
             cvs.current.moveTo(lines[i - 1].x, lines[i - 1].y);

@@ -1,7 +1,4 @@
-/** @jsx h */
-import { h } from "preact";
 import { useState } from "preact/hooks";
-import { tw } from "@twind";
 
 export default function Form(props: any) {
     const [errorMsg, setErrorMsg] = useState("");
@@ -72,11 +69,11 @@ export default function Form(props: any) {
 
     
     return (
-        <form class={tw`flex flex-col w-full gap-1`} onSubmit={validate} id={props.id}>
-            <input class={tw`p-2 border-2 border-gray-300 rounded focus:outline-none focus:border-sky-500`} type="text" name="roomCode" placeholder="Room Code" autoComplete="off" autofocus={true} />
+        <form class="flex flex-col w-full gap-1" onSubmit={validate} id={props.id}>
+            <input class="p-2 border-2 border-gray-300 rounded focus:outline-none focus:border-sky-500" type="text" name="roomCode" placeholder="Room Code" autoComplete="off" autofocus={true} />
             <div>
-                <p class={tw`pl-1 text-red-500 text-sm font-semibold`}>{errorMsg}</p>
-                <p class={tw`pl-1 text-lime-500 text-sm font-semibold`}>{infoMsg}</p>
+                <p class="pl-1 text-red-500 text-sm font-semibold">{errorMsg}</p>
+                <p class="pl-1 text-lime-500 text-sm font-semibold">{infoMsg}</p>
             </div>
         </form>
     );

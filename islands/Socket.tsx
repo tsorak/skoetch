@@ -1,9 +1,6 @@
-/** @jsx h */
-import { h } from "preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import Canvas from "./Canvas.tsx";
 // import { SELF, IS_BROWSER } from "$fresh/runtime.ts";
-import { tw } from "@twind";
 import Chat from "./Chat.tsx";
 import getType from "@/utils/getType.ts";
 
@@ -114,12 +111,12 @@ export default function Socket(props: SocketProps) {
   }
 
   return (
-    <div class={tw`flex flex-none`}>
-      <div class={tw`flex border-1 border-gray-600`}>
+    <div class="flex flex-none">
+      <div class="flex border-1 border-gray-600">
         <Canvas sendLine={sendLine} recievedLines={recievedLines} />
       </div>
       
-      <div class={tw`flex flex-col h-auto max-w-min place-content-stretch`}>
+      <div class="flex flex-col h-auto max-w-min place-content-stretch">
         <Chat sendMsg={sendMsg} recievedMsgs={recievedMsgs} />
       </div>
     </div>

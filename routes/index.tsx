@@ -1,6 +1,3 @@
-/** @jsx h */
-import { h } from "preact";
-import { tw } from "@twind";
 // import Form from "../islands/Form.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { roomExists, newRoom } from "@/communication/roomHandler.ts"
@@ -55,16 +52,16 @@ export const handler: Handlers<Data> = {
 export default function Home({ data }: PageProps<Data>) {
   const { roomID, status } = data;
   return (
-    <div class={tw`flex flex-col justify-center items-center h-screen`}>
-      <div class={tw`relative group flex flex-col max-w-min gap-[2px]`}>
-        <p class={tw`font-bold self-center text-gray-600`}>ENTER ROOM CODE</p>
-        <div class={tw`absolute scale-x-0 translate-y-5 transition-scale group-focus-within:scale-x-75 w-full h-[2px] bg-sky-500`}></div>
+    <div class="flex flex-col justify-center items-center h-screen">
+      <div class="relative group flex flex-col max-w-min gap-[2px]">
+        <p class="font-bold self-center text-gray-600">ENTER ROOM CODE</p>
+        <div class="absolute scale-x-0 translate-y-5 transition-scale group-focus-within:scale-x-75 w-full h-[2px] bg-sky-500"></div>
         <form>
           
-          <input class={tw`p-2 border-2 border-gray-300 rounded focus:outline-none focus:border-sky-500`} type="text" name="roomID" placeholder="Room Code" autoComplete="off" autofocus={true} required={false} />
-          <div class={tw`min-h-[40px]`}>
-            <p class={tw`pl-1 text-red-500 text-sm font-semibold`}>{status.error}</p>
-            <p class={tw`pl-1 text-lime-500 text-sm font-semibold`}>{status.info}</p>
+          <input class="p-2 border-2 border-gray-300 rounded focus:outline-none focus:border-sky-500" type="text" name="roomID" placeholder="Room Code" autoComplete="off" autofocus={true} required={false} />
+          <div class="min-h-[40px]">
+            <p class="pl-1 text-red-500 text-sm font-semibold">{status.error}</p>
+            <p class="pl-1 text-lime-500 text-sm font-semibold">{status.info}</p>
           </div>
           {status.error = ""}
           {status.info = ""}
