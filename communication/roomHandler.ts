@@ -9,7 +9,7 @@ function newRoom(requestedRoom, startingCanvas = []) {
         return false; //ROOM EXISTS
     } else {
         roomData.set(requestedRoom, startingCanvas);
-        roomChat.set(requestedRoom, []);
+        roomChat.set(requestedRoom, [`Welcome to ${requestedRoom}!`]);
         roomClients.set(requestedRoom, []);
         return true; //ROOM CREATED
     }
