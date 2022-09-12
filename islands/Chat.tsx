@@ -19,7 +19,7 @@ export default function Chat(props: any) {
     const form = useRef()
 
     useEffect(() => {
-        console.log("%cChat %cMounted", "color: #fff", "color: #0f0");
+        console.log("[%cMOUNTED%c] Chat", "color: #0f0", "color: #fff");
 
         form.current.addEventListener("submit", sendMsg);
 

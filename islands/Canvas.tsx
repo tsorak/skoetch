@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "preact/hooks";
+import getType from "@/utils/getType.ts";
 // import { SELF, IS_BROWSER } from "$fresh/runtime.ts";
 // import { tw } from "@twind";
 
@@ -9,6 +10,13 @@ import { useState, useEffect, useRef } from "preact/hooks";
 interface Point {
     x: number,
     y: number,
+    size: number,
+    color: string,
+}
+
+interface Line {
+    1: {x: number, y: number} | undefined,
+    2: {x: number, y: number} | undefined,
     size: number,
     color: string,
 }
@@ -33,40 +41,74 @@ export default function Canvas(props: any) {
     // const lines: [Line] = [{x: 0, y: 0, size: 1, color: "#fff"}];
     // const linesStorage = [{}];
 
+    let lastLine: Line = { 1: undefined, 2: undefined, size: brushSize, color: brushColor };
     function paint(event: PointerEvent) {
-        // console.log("painting", event);
+        // console.log("Type", event.type);
         const bounds = canvas.current.getBoundingClientRect();
-        const x = event.clientX - bounds.left;
-        const y = event.clientY - bounds.top;
-        storeLine({ x, y, size: brushSize, color: brushColor });
+        const x = Math.floor(event.clientX - bounds.left);
+        const y = Math.floor(event.clientY - bounds.top);
+        // console.log(`Type: ${event.type} %c${x} %c${y}`, "color: red", "color: blue");
+        
+
+        if (typeof lastLine[1] === "undefined") {
+            lastLine[1] = { x, y };
+        } else if (typeof lastLine[2] === "undefined") {
+            lastLine[2] = { x, y };
+            lastLine.size = brushSize;
+            lastLine.color = brushColor;
+            storeLine(lastLine);
+            lastLine = { 1: { x, y }, 2: undefined, size: brushSize, color: brushColor };
+        }
+
+        if (event.type === "pointerup") {
+            lastLine = { 1: undefined, 2: undefined, size: brushSize, color: brushColor };
+        }
     }
 
-    const storeLine = (point: Point | Record<never, never>) => {
-        const data = { ...point };
+    const storeLine = (line: Line | Record<never, never>) => {
+        const data = { ...line };
         // linesStorage.push(line);
         // render(linesStorage)
         sendLine(data);
     }
 
-    const render = (lines: [Point]) => {
-        if (lines.length < 2) return console.log("Not enough points to render a line");
+    const render = (data: Array<Line> | Line) => {
+        // if (lines.length < 2) return console.log("Not enough points to render a line");
         const cvs = canvas.current.getContext("2d");
-        for (let i = 1; i < lines.length; i++) {
-            // console.log(cvs.current);
-            
-            cvs.beginPath();
-            cvs.moveTo(lines[i - 1].x, lines[i - 1].y);
-            cvs.lineWidth = lines[i].size;
-            cvs.lineCap = 'round';
-            cvs.strokeStyle = lines[i].color;
-            cvs.lineTo(lines[i].x, lines[i].y);
-            cvs.stroke();
+        
+        switch (getType(data)) {
+            case "array":
+                data.forEach((line: Line) => {
+                    cvs.beginPath();
+                    cvs.moveTo(line[1].x, line[1].y);
+                    cvs.lineWidth = line.size;
+                    cvs.lineCap = 'round';
+                    cvs.strokeStyle = line.color;
+                    cvs.lineTo(line[2].x, line[2].y);
+                    cvs.stroke();
+                });
+            break;
+
+            case "object":
+                cvs.beginPath();
+                cvs.moveTo(data[1].x, data[1].y);
+                cvs.lineWidth = data.size;
+                cvs.lineCap = 'round';
+                cvs.strokeStyle = data.color;
+                cvs.lineTo(data[2].x, data[2].y);
+                cvs.stroke();
+            break;
+
+            default:
+                throw new Error("Invalid type to render");
         }
+
+        
     }
 
     useEffect(() => {
         // if (!island.hasMounted) return;
-        console.log("%cCanvas %cMounted", "color: #fff", "color: #0f0");
+        console.log("[%cMOUNTED%c] Canvas", "color: #0f0", "color: #fff");
 
         // const canvas = document.getElementById("cvs");
         canvas.current.onpointerdown = function(event) {
@@ -88,12 +130,14 @@ export default function Canvas(props: any) {
             canvas.current.onpointerup = function(event) {
                 canvas.current.onpointermove = null;
                 canvas.current.onpointerup = null;
-                storeLine({})
+                paint(event);
+                // storeLine({})
             };
         };
     }, [])
 
     useEffect(() => {
+        // console.log("recievedLines:", recievedLines);
         render(recievedLines);
     }, [recievedLines]);
 

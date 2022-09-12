@@ -17,7 +17,7 @@ export default function Socket(props: SocketProps) {
 
   // useEffect should only be run on mount
   useEffect(() => {
-    console.log("%cSocket %cMounted", "color: #fff", "color: #0f0");
+    console.log("[%cMOUNTED%c] Socket", "color: #0f0", "color: #fff");
     
     try {
       socket = new WebSocket("ws://" + location.host + location.pathname);
