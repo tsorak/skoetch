@@ -13,7 +13,6 @@ export default function Chat(props: any) {
 
     console.log(props);
     const { sendMsg, recievedMsgs } = props;
-    const [outMsg, setOutMsg] = useState("");
 
     // console.log(recievedMsgs[0])
 
@@ -38,7 +37,7 @@ export default function Chat(props: any) {
                 {recievedMsgs.map((msg: string) => <li key={msg}>{msg}</li>)}
             </ul>
             <form ref={form}>
-                <input class="focus:outline-none border-2 border-gray-200 rounded" type="text" name="clientMsg" autoComplete="off" autofocus value={outMsg} />
+                <input class="focus:outline-none border-2 border-gray-200 rounded" type="text" name="clientMsg" autoComplete="off" autofocus />
             </form>
         </>
     );

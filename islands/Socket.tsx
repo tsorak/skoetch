@@ -102,6 +102,7 @@ export default function Socket(props: SocketProps) {
   function sendMsg(e) {
     e.preventDefault();
     const msg = e.srcElement.clientMsg.value;
+    e.srcElement.clientMsg.value = "";
     if (!msg) return;
     socket.current.send(msg);
   }
