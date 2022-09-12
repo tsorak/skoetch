@@ -12,29 +12,27 @@ export default function Socket(props: SocketProps) {
   const [recievedLines, setRecievedLines] = useState([]);
   const [recievedMsgs, setRecievedMsgs] = useState([]);
   // const [outgoingMessage, setOutgoingMessage] = useState("");
-  // let socket: WebSocket;
-  const socket = useRef(null)
+  let socket: WebSocket | null;
+  // const socket = useRef(null)
 
-  const island = {
-    hasMounted: false,
-  }
   // useEffect should only be run on mount
   useEffect(() => {
-    if (!island.hasMounted) return;
     console.log("%cSocket %cMounted", "color: #fff", "color: #0f0");
     
     try {
-      socket.current = new WebSocket("ws://" + location.host + location.pathname);
+      socket = new WebSocket("ws://" + location.host + location.pathname);
+      // console.log(socket);
+      
   
-      socket.current.onopen = () => console.log("socket opened");
-      socket.current.onmessage = (e) => {
+      socket.onopen = () => console.log("socket opened");
+      socket.onmessage = (e) => {
         let parsed: any;
         try {
           parsed = JSON.parse(e.data);
         } catch (error) {
           parsed = e.data;
         }
-        console.log("socket message:", parsed);
+        // console.log("socket message:", parsed);
 
         switch (getType(parsed)) {
           case "string":
@@ -74,41 +72,27 @@ export default function Socket(props: SocketProps) {
           default:
             throw new Error("invalid socket message type");
         }
-  
-        // if (typeof parsed === "string") {
-        //   // setIncomingMessages(arr => [...arr, parsed]);
-        //   updateChat(parsed);
-        // } else {
-        //   updateCanvas(parsed);
-        //   // try {
-        //   //   parsed.forEach(msg => {
-        //   //     setIncomingMessages(arr => [...arr, msg]);
-        //   //   });
-        //   // } catch (error) {
-        //   //   console.log(error);
-        //   // }
-        // }
-  
       };
-      socket.current.onerror = (e) => console.log("socket errored:", e);
-      socket.current.onclose = () => console.log("socket closed");
+      
+      socket.onerror = (e) => console.log("socket errored:", e);
+      socket.onclose = () => console.log("socket closed");
   
     } catch (error) {
       console.log(error);
     }
-  }, [island.hasMounted])
-  island.hasMounted = true;
+  }, [])
   
   function sendMsg(e) {
     e.preventDefault();
     const msg = e.srcElement.clientMsg.value;
     e.srcElement.clientMsg.value = "";
     if (!msg) return;
-    socket.current.send(msg);
+    
+    socket.send(msg);
   }
 
-  function sendLine(line) {    
-    socket.current.send(JSON.stringify(line));
+  function sendLine(line) {
+    socket.send(JSON.stringify(line));
   }
 
   return (

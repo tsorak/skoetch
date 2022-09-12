@@ -11,25 +11,19 @@ interface Chat {
 
 export default function Chat(props: any) {
 
-    console.log(props);
+    // console.log(props);
     const { sendMsg, recievedMsgs } = props;
 
     // console.log(recievedMsgs[0])
 
     const form = useRef()
 
-    const island = {
-        hasMounted: false,
-    }
-
     useEffect(() => {
-        if (!island.hasMounted) return;
         console.log("%cChat %cMounted", "color: #fff", "color: #0f0");
 
         form.current.addEventListener("submit", sendMsg);
 
-    }, [island.hasMounted])
-    island.hasMounted = true;
+    }, [])
 
     return (
         <>
