@@ -33,12 +33,12 @@ export default function Chat(props: any) {
 
     return (
         <div class="flex flex-col">
-            <div ref={messageDiv} class="px-1 inline flex-grow text-sm overflow-y-scroll h-0">
+            <div ref={messageDiv} class="flex flex-col flex-grow text-sm overflow-y-scroll h-0">
                 {!recievedMsgs.length && <p class="text-gray-400">Connecting to chat...</p>}
-                {recievedMsgs && recievedMsgs.map((msg: string) => <p><span class="text-xs text-gray-400">{(new Date).getHours()}:{(new Date).getMinutes()}</span> {msg}</p>)}
+                {recievedMsgs && recievedMsgs.map((msg: string) => <p>{msg}</p>)}
             </div>
             <form ref={form}>
-                <input class="focus:outline-none border-2 border-gray-200 rounded" type="text" name="clientMsg" autoComplete="off" autofocus />
+                <input class="focus:outline-none bg-gray-100 p-1" type="text" name="clientMsg" autoComplete="off" autofocus />
             </form>
         </div>
     );
