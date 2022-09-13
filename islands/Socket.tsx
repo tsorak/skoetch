@@ -96,14 +96,10 @@ export default function Socket(props: SocketProps) {
   }
 
   return (
-    <div class="flex flex-none">
-      <div class="flex border-1 border-gray-600">
-        <Canvas sendLine={sendLine} recievedLines={recievedLines} />
-      </div>
+    <div class="flex max-h-[min-content]">
+      <Canvas sendLine={sendLine} recievedLines={recievedLines} />
       
-      <div class="flex flex-col h-auto max-w-min place-content-stretch">
-        <Chat sendMsg={sendMsg} recievedMsgs={recievedMsgs} />
-      </div>
+      <Chat sendMsg={sendMsg} recievedMsgs={recievedMsgs} />
     </div>
   );
 }

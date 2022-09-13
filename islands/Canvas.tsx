@@ -142,6 +142,8 @@ export default function Canvas(props: any) {
     }, [recievedLines]);
 
     return (
-        <canvas ref={canvas} width={width} height={height} />
+        <div class="flex">
+            <canvas ref={canvas} class="relative flex-none border-1 place-self-center" width={width} height={height} />
+        </div>
     );
 }

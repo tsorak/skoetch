@@ -107,8 +107,8 @@ function handleMessage(socket, data) {
 
 export default function RoomCanvasPage(props: PageProps) {
   return (
-  <div class="flex flex-col w-full h-screen items-center">
-    <h1 class="mt-16 text-xl">Welcome to {props.params.roomCode}!</h1>
+  <div class="flex flex-col flex-none w-screen h-screen items-center justify-center overflow-hidden">
+    {/* <h1 class="mt-16 text-xl">Welcome to {props.params.roomCode}!</h1> */}
     <Socket roomID={props.params.roomCode} />
   </div>
   );

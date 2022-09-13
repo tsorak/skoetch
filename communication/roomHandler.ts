@@ -14,6 +14,10 @@ function newRoom(requestedRoom, startingCanvas = []) {
         return true; //ROOM CREATED
     }
 }
+newRoom("lulexdd"); 
+for (let i = 0; i < 32; i++) {
+    updateRoomData("lulexdd", "forsen")
+}
 
 function joinRoom(requestedRoom, socketID) {
     if (!roomData.has(requestedRoom)) {
