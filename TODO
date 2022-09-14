@@ -32,6 +32,8 @@ Client
         ✔ populate canvas @done(22-09-13 15:45)
 
     ✔ we can only draw a line if we have two or more points @done(22-09-13 15:45)
+
+    ✔ give canvas and chat their own sockets (to prevent both islands from re-rendering once any type of message is received) @done(22-09-14 14:11)
         
 80 roomCode.tsx
 42 roomHandler.ts

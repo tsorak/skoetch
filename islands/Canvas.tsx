@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "preact/hooks";
+import { useSignal } from "@preact/signals";
 import getType from "@/utils/getType.ts";
 // import { SELF, IS_BROWSER } from "$fresh/runtime.ts";
 // import { tw } from "@twind";
@@ -7,12 +8,12 @@ import getType from "@/utils/getType.ts";
     
 // }
 
-interface Point {
-    x: number,
-    y: number,
-    size: number,
-    color: string,
-}
+// interface Point {
+//     x: number,
+//     y: number,
+//     size: number,
+//     color: string,
+// }
 
 interface Line {
     1: {x: number, y: number} | undefined,
@@ -25,12 +26,13 @@ interface Line {
 //     hasMounted: false,
 // }
 
-export default function Canvas(props: any) {
+export default function Canvas(props: unknown) {
 
     // console.log(props);
-    const { sendLine, recievedLines } = props;
+    // const { sendLine, recievedLines } = props;
+    const recievedLines = useSignal<Array<Line>>([]);
 
-    const canvas = useRef(null);
+    const canvas = useRef<HTMLCanvasElement>(null);
 
     const [width, setWidth] = useState(800);
     const [height, setHeight] = useState(600);
@@ -69,7 +71,7 @@ export default function Canvas(props: any) {
         const data = { ...line };
         // linesStorage.push(line);
         // render(linesStorage)
-        sendLine(data);
+        socket?.send(JSON.stringify(data));
     }
 
     const render = (data: Array<Line> | Line) => {
@@ -102,15 +104,44 @@ export default function Canvas(props: any) {
             default:
                 throw new Error("Invalid type to render");
         }
-
-        
     }
+
+    let socket: WebSocket | null;
 
     useEffect(() => {
         // if (!island.hasMounted) return;
         console.log("[%cMOUNTED%c] Canvas", "color: #0f0", "color: #fff");
 
-        // const canvas = document.getElementById("cvs");
+        //socket
+        try {
+            socket = new WebSocket("ws://" + location.host + "/api/canvas/" + location.pathname.split("/")[2]);
+            socket.onopen = () => console.log("socket opened");
+            socket.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+                console.log(data);
+                
+                switch (data.type) {
+                    case "initialCanvasObjects":
+                        recievedLines.value = [...data.body];
+                        break;
+                    
+                    case "canvasObject":
+                        recievedLines.value = [...recievedLines.value, data.body];
+                        break;
+                
+                    default:
+                        break;
+                }
+                
+            };
+            socket.onerror = (e) => console.log("socket errored:", e);
+            socket.onclose = () => console.log("socket closed");
+    
+        } catch (error) {
+            console.log(error);
+        }
+        
+        //pointer events
         canvas.current.onpointerdown = function(event) {
             paint(event);
 
@@ -138,12 +169,12 @@ export default function Canvas(props: any) {
 
     useEffect(() => {
         // console.log("recievedLines:", recievedLines);
-        render(recievedLines);
-    }, [recievedLines]);
+        render(recievedLines.value);
+    }, [recievedLines.value]);
 
     return (
         <div class="flex">
-            <canvas ref={canvas} class="relative flex-none border-1 place-self-center" width={width} height={height} />
+            <canvas ref={canvas} class="relative flex-none border-2 border-gray-200 place-self-center" width={width} height={height} />
         </div>
     );
 }
