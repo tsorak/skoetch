@@ -32,7 +32,7 @@ export default function Chat(props: any) {
             socket.onopen = () => console.log("socket opened");
             socket.onmessage = (e) => {
                 const data = JSON.parse(e.data);
-                console.log(data);
+                // console.log(data);
                 
                 switch (data.type) {
                     case "initialMessages":

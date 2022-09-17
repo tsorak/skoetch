@@ -77,7 +77,7 @@ import Chat from "@/islands/Chat.tsx";
 
 export default function RoomCanvasPage(props: PageProps) {
   return (
-  <div class="flex flex-none w-screen h-screen items-center justify-center overflow-scroll">
+  <div class="flex flex-none w-screen h-screen items-center justify-center overflow-visible">
     {/* <h1 class="mt-16 text-xl">Welcome to {props.params.roomCode}!</h1> */}
     {/* <Socket roomID={props.params.roomCode} /> */}
     <div class="flex min-h-[600px]">
