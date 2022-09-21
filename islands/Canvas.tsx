@@ -116,7 +116,11 @@ export default function Canvas(props: unknown) {
 
         //socket
         try {
-            socket = new WebSocket("ws://" + location.host + "/api/canvas/" + location.pathname.split("/")[2]);
+            if (location.host.split(":")[0] === "localhost") {
+                socket = new WebSocket("ws://" + location.host + "/api/canvas/" + location.pathname.split("/")[2]);
+            } else {
+                socket = new WebSocket("wss://" + location.host + "/api/canvas/" + location.pathname.split("/")[2]);
+            }
             socket.onopen = () => console.log("socket opened");
             socket.onmessage = (e) => {
                 const data = JSON.parse(e.data);
