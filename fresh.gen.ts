@@ -3,12 +3,13 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/api/_server.ts";
-import * as $1 from "./routes/api/canvas/[room].ts";
-import * as $2 from "./routes/api/chat/[room].ts";
-import * as $3 from "./routes/index.tsx";
-import * as $4 from "./routes/room/[roomCode].tsx";
-import * as $5 from "./routes/tab.tsx";
+import * as $0 from "./routes/_404.tsx";
+import * as $1 from "./routes/api/_server.ts";
+import * as $2 from "./routes/api/canvas/[room].ts";
+import * as $3 from "./routes/api/chat/[room].ts";
+import * as $4 from "./routes/index.tsx";
+import * as $5 from "./routes/room/[roomCode].tsx";
+import * as $6 from "./routes/tab.tsx";
 import * as $$0 from "./islands/Canvas.tsx";
 import * as $$1 from "./islands/Chat.tsx";
 import * as $$2 from "./islands/Counter.tsx";
@@ -18,12 +19,13 @@ import * as $$5 from "./islands/Tab.tsx";
 
 const manifest = {
   routes: {
-    "./routes/api/_server.ts": $0,
-    "./routes/api/canvas/[room].ts": $1,
-    "./routes/api/chat/[room].ts": $2,
-    "./routes/index.tsx": $3,
-    "./routes/room/[roomCode].tsx": $4,
-    "./routes/tab.tsx": $5,
+    "./routes/_404.tsx": $0,
+    "./routes/api/_server.ts": $1,
+    "./routes/api/canvas/[room].ts": $2,
+    "./routes/api/chat/[room].ts": $3,
+    "./routes/index.tsx": $4,
+    "./routes/room/[roomCode].tsx": $5,
+    "./routes/tab.tsx": $6,
   },
   islands: {
     "./islands/Canvas.tsx": $$0,

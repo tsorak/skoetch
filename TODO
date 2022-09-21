@@ -38,4 +38,6 @@ Client
 General
     add login & registration system
     surrealDB
+    JWTs (_middleware.ts)
+    ✔ 404 @done(22-09-21 14:38)
 
