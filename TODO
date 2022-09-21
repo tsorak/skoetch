@@ -40,5 +40,5 @@ General
     ☐ surrealDB
     ☐ JWTs (_middleware.ts)
     ✔ 404 @done(22-09-21 14:38)
-    ☐ wipe canvas when its no longer used. (no clients || after x amount of seconds)?
-
+    ☐ wipe canvas when its no longer used. (no clients || after x amount of seconds || room creator gets a clear button)?
+    ☐ limit the amount of users allowed to be in a room at once (yikes!)
