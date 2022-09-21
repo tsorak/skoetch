@@ -36,8 +36,9 @@ Client
     ✔ give canvas and chat their own sockets (to prevent both islands from re-rendering once any type of message is received) @done(22-09-14 14:11)
         
 General
-    add login & registration system
-    surrealDB
-    JWTs (_middleware.ts)
+    ☐ add login & registration system
+    ☐ surrealDB
+    ☐ JWTs (_middleware.ts)
     ✔ 404 @done(22-09-21 14:38)
+    ☐ wipe canvas when its no longer used. (no clients || after x amount of seconds)?
 
