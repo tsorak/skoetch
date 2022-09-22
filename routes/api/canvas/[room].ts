@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { roomExists, joinRoom, leaveRoom, updateRoomData } from "@/communication/roomHandler.ts"
+import { roomExists, joinRoom, leaveRoom, updateRoomData, connectedClients } from "@/communication/roomHandler.ts"
 import { storeSocket, removeSocket } from "@/communication/socketHandler.ts"
 import socketTypes from "@/utils/socketTypes.ts";
 
@@ -35,23 +35,24 @@ function socketHandler(data: {response: Response, socket: WebSocket}): Response 
 }
 
 function handleConnected(socket) {
-  console.log("Connected to client ...");
-
+  // console.log("Connected to client ...");
   socket.id = crypto.randomUUID();
-  console.log(socket.roomID, socket.id);
   storeSocket(socketTypes.CANVAS, socket.id, socket);
-
-  console.log("Joining room...");
+  // console.log("Joining room...");
   joinRoom(socketTypes.CANVAS, socket.roomID, socket.id);
+
+  console.log(`[CANVAS - ${socket.roomID}(${connectedClients(socket.roomID)})] CONNECT ${socket.id}`);
 }
 function handleDisconnect(socket) {
-  console.log("Disconnected from client ...");
+  // console.log("Disconnected from client ...");
   removeSocket(socketTypes.CANVAS, socket.id, socket.roomID);
   leaveRoom(socketTypes.CANVAS, socket.roomID, socket.id);
+  console.log(`[CANVAS - ${socket.roomID}(${connectedClients(socket.roomID)})] DISCONNECT ${socket.id}`);
 }
 
 function handleMessage(socket, data) {
   updateRoomData(socketTypes.CANVAS, socket.roomID, data);
+  console.log(`[CANVAS - ${socket.roomID}] ${data}`);
 
   // const socketPos = [...activeSockets.keys()].indexOf(socket.id);
   // console.log("{" + socket.roomID + "} [" + socketPos + "]>>", parsedData);

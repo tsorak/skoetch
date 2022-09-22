@@ -190,11 +190,11 @@ export default function Canvas(props: unknown) {
         <>
             <div class="flex absolute z-10 -translate-y-[27px] border-x-2 border-t-2 border-gray-200 bg-gray-100 gap-0.5">
                 <input class="bg-gray-100" ref={brushColorElem} type="color" value={brushColor.value} onInput={(e) => {
-                    console.log(e.target.value);
+                    // console.log(e.target.value);
                     brushColor.value = e.target.value;
                 }} />
                 <input class="w-12 bg-gray-100 focus:outline-none" ref={brushSizeElem} type="number" value={brushSize.value} min={1} step={1} onInput={(e) => {
-                    console.log(e.target.value);
+                    // console.log(e.target.value);
                     brushSize.value = e.target.value;
                 }} onWheel={(e) => {
                     const scrollingDown = e.deltaY > 0;

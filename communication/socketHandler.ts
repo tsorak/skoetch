@@ -1,6 +1,4 @@
-import { leaveRoom } from "./roomHandler.ts";
 import socketTypes from "../utils/socketTypes.ts";
-
 
 const canvasSockets = new Map();
 const chatSockets = new Map();

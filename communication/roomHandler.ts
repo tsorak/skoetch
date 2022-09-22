@@ -79,7 +79,7 @@ function updateRoomData(type, roomID, data) {
         parsedData = data;
     }
 
-    console.dir(parsedData);
+    // console.dir(parsedData);
     
     switch (type) {
         case socketTypes.CANVAS:
@@ -130,10 +130,15 @@ const roomExists = (roomID: string) => {
     }
 }
 
+const connectedClients = (roomID: string) => {
+    return [...roomCanvasClients.get(roomID), ...roomChatClients.get(roomID)].length;
+}
+
 export {
     joinRoom,
     newRoom,
     leaveRoom,
     updateRoomData,
-    roomExists
+    roomExists,
+    connectedClients
 }
