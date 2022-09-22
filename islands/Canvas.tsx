@@ -184,7 +184,7 @@ export default function Canvas(props: unknown) {
     useEffect(() => {
         // console.log("recievedLines:", recievedLines);
         render(recievedLines.value);
-    }, [recievedLines.value]);
+    }, [recievedLines.value.length]);
 
     return (
         <>

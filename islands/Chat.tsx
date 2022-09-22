@@ -64,7 +64,7 @@ export default function Chat(props: any) {
 
     useEffect(() => {
         messageDiv.current.scrollTop = messageDiv.current.scrollHeight - messageDiv.current.offsetHeight
-    }, [recievedMsgs.value])
+    }, [recievedMsgs.value.length])
     
     function sendMsg(e) {
         e.preventDefault();
