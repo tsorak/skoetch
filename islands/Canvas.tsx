@@ -36,8 +36,8 @@ export default function Canvas(props: unknown) {
     const brushColorElem = useRef<HTMLInputElement>(null);
     const brushSizeElem = useRef<HTMLInputElement>(null);
 
-    const [width, setWidth] = useState(800);
-    const [height, setHeight] = useState(600);
+    const width = useSignal<number>(800);
+    const height = useSignal<number>(600);
 
     const brushSize = useSignal<number>(1);
     const brushColor = useSignal<string>("#0000ff");
@@ -203,7 +203,7 @@ export default function Canvas(props: unknown) {
                 }}/>
             </div>
             <div class="flex">
-                <canvas ref={canvasElem} class="relative flex-none border-2 border-gray-200 place-self-center" width={width} height={height} />
+                <canvas ref={canvasElem} class="relative flex-none border-2 border-gray-200 place-self-center" width={width.value} height={height.value} />
             </div>
         </>
     );
