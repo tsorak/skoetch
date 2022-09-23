@@ -18,9 +18,10 @@ function newRoom(requestedRoom, startingCanvas = []) {
     }
 }
 newRoom("lulexdd"); 
-for (let i = 0; i < 32; i++) {
-    updateRoomData(socketTypes.CHAT, "lulexdd", "forsen")
-}
+updateRoomData(socketTypes.CHAT, "lulexdd", "forsenforsenforsenforsenforsenforsenforsenforsenforsen")
+// for (let i = 0; i < 32; i++) {
+//     updateRoomData(socketTypes.CHAT, "lulexdd", "forsen")
+// }
 
 function joinRoom(type, requestedRoom, socketID) {
     if (!roomCanvas.has(requestedRoom)) {

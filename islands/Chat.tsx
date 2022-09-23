@@ -76,13 +76,13 @@ export default function Chat(props: any) {
     }
 
     return (
-        <div class="flex flex-col border-y-2 border-r-2 border-gray-200">
-            <div ref={messageDiv} class="flex flex-col flex-grow text-sm overflow-y-scroll h-0">
+        <div class="flex flex-col border-y-2 border-r-2 border-gray-200 max-w-[12rem]">
+            <div ref={messageDiv} class="flex flex-col flex-grow text-sm overflow-y-scroll h-0 break-all">
                 {(!recievedMsgs || !recievedMsgs.value.length) && <p class="text-gray-400">Connecting to chat...</p>}
                 {recievedMsgs && recievedMsgs.value.map((msg: string) => <p>{msg}</p>)}
             </div>
             <form ref={form}>
-                <input class="focus:outline-none bg-gray-200 p-1" type="text" name="clientMsg" autoComplete="off" />
+                <input class="focus:outline-none bg-gray-200 p-1 w-48" type="text" name="clientMsg" autoComplete="off" />
             </form>
         </div>
     );
