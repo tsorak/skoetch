@@ -70,6 +70,15 @@ function leaveRoom(type, requestedRoom, socketID) {
     // const clientsConnectedToRoom = roomClients.get(requestedRoom);
     // clientsConnectedToRoom.splice(clientsConnectedToRoom.indexOf(socketID), 1);
     // roomClients.set(requestedRoom, clientsConnectedToRoom);
+    
+    if ((roomChatClients.get(requestedRoom).length + roomCanvasClients.get(requestedRoom).length) === 0) {
+        roomCanvas.delete(requestedRoom);
+        roomChat.delete(requestedRoom);
+        roomCanvasClients.delete(requestedRoom);
+        roomChatClients.delete(requestedRoom);
+
+        console.log(`[${requestedRoom}] DELETED`);
+    }
 }
 
 function updateRoomData(type, roomID, data) {
@@ -124,7 +133,7 @@ function updateRoomData(type, roomID, data) {
 }
 
 const roomExists = (roomID: string) => {
-    if (roomCanvas.get(roomID)) {
+    if (roomCanvas.has(roomID) && roomChat.has(roomID) && roomCanvasClients.has(roomID) && roomChatClients.has(roomID)) {
         return true;
     } else {
         return false;
@@ -132,7 +141,9 @@ const roomExists = (roomID: string) => {
 }
 
 const connectedClients = (roomID: string) => {
-    return [...roomCanvasClients.get(roomID), ...roomChatClients.get(roomID)].length;
+    const canvasClients = roomCanvasClients.get(roomID)?.length || 0;
+    const chatClients = roomChatClients.get(roomID)?.length || 0;
+    return canvasClients + chatClients;
 }
 
 export {

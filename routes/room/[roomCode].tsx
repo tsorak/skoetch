@@ -1,15 +1,20 @@
-import { PageProps } from "$fresh/server.ts";
+import { PageProps, Handlers } from "$fresh/server.ts";
 import Canvas from "@/islands/Canvas.tsx";
 import Chat from "@/islands/Chat.tsx";
+import { roomExists } from "../../communication/roomHandler.ts";
 
-// export const handler: Handlers = {
-//   GET(req, ctx) {
-//     const res: Response = new Response;
-//     console.log(ctx, req, res);
+export const handler: Handlers = {
+  GET(req, ctx) {
+    const url = new URL(req.url);
+    const roomID = url.pathname.split("/")[2];
+
+    if (!roomExists(roomID)) return Response.redirect(url.origin);
+    // const res: Response = new Response;
+    // console.log(ctx, req, res);
     
-//     return ctx.render();
-//   }
-// }
+    return ctx.render();
+  }
+}
 
 export default function RoomCanvasPage(props: PageProps) {
   return (
