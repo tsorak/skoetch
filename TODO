@@ -44,3 +44,6 @@ General
     ☐ wipe canvas when its no longer used. (no clients || after x amount of seconds || room creator gets a clear button)?
     ☐ limit the amount of users allowed to be in a room at once (yikes!)
     ✔ improve logging @started(22-09-22 23:17) @done(22-09-23 00:04) @lasted(47m19s)
+
+Roomhandler
+    roomCanvas key should be pixel coordinates?
