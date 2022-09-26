@@ -33,6 +33,16 @@ CANVAS
         var ctx = (a canvas context);
         ctx.canvas.width  = window.innerWidth;
         ctx.canvas.height = window.innerHeight;
+    
+    add shape tool
+        rectangle + outlined
+        circle + outlined
+        line
+        bezier
+    
+    add eraser
+
+    
 
 Client
     on initial connect
