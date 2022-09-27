@@ -53,7 +53,7 @@ export default function Chat(props: any) {
                 
             };
             socket.onerror = (e) => console.log("socket errored:", e);
-            socket.onclose = () => {console.log("socket closed"); location.replace(location.origin)};
+            socket.onclose = () => console.log("socket closed");
             // socket.onclose = () => location.replace(location.origin);
     
         } catch (error) {

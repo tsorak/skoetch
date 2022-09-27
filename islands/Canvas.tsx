@@ -32,15 +32,69 @@ export default function Canvas(props: unknown) {
     // const { sendLine, recievedLines } = props;
     const recievedLines = useSignal<Array<Line>>([]);
 
+    //REFS
     const canvasElem = useRef<HTMLCanvasElement>(null);
     const brushColorElem = useRef<HTMLInputElement>(null);
     const brushSizeElem = useRef<HTMLInputElement>(null);
+    const toolbarHighlighter = useRef<HTMLDivElement>(null);
 
-    const width = useSignal<number>(800);
-    const height = useSignal<number>(600);
+    //TOOLBAR
+    const updateCursor = () => {
+        switch (TOOL.activeTool) {
+            case TOOL.availableTools.BRUSH:
+                canvasElem.current.style.cursor = "auto";
+                break;
+            case TOOL.availableTools.ERASER:
+                canvasElem.current.style.cursor = "no-drop";
+                break;
+            case TOOL.availableTools.ZOOM:
+                canvasElem.current.style.cursor = "zoom-in";
+                break;
 
+            default:
+                break;
+        }
+    }
+    const TOOL = {
+        availableTools: {
+            BRUSH: "BRUSH",
+            ERASER: "ERASER",
+            ZOOM: "ZOOM"
+        },
+        activeTool: "BRUSH",
+        lastTool: "",
+        nextTool: () => {
+            if (Object.keys(TOOL.availableTools).indexOf(TOOL.activeTool) === Object.keys(TOOL.availableTools).length - 1) {
+                TOOL.lastTool = TOOL.activeTool
+                TOOL.activeTool = Object.keys(TOOL.availableTools)[0]
+            } else {
+                TOOL.lastTool = TOOL.activeTool
+                TOOL.activeTool = Object.keys(TOOL.availableTools)[Object.keys(TOOL.availableTools).indexOf(TOOL.activeTool) + 1]
+            }
+            canvasTool.value = TOOL.activeTool
+
+            updateCursor()
+        },
+        setTool: (tool: string) => {
+            console.log("LULE")
+            if (tool === TOOL.activeTool) {
+                TOOL.activeTool = TOOL.lastTool
+            } else {
+                TOOL.lastTool = TOOL.activeTool
+                TOOL.activeTool = tool
+            }
+            canvasTool.value = TOOL.activeTool
+
+            updateCursor()
+        }
+    }
+    const canvasTool = useSignal<string>(TOOL.availableTools.BRUSH);
+
+    //MISC CANVAS
     const brushSize = useSignal<number>(1);
     const brushColor = useSignal<string>("#0000ff");
+    const width = useSignal<number>(800);
+    const height = useSignal<number>(600);
 
     // const lines: [Line] = [{x: 0, y: 0, size: 1, color: "#fff"}];
     // const linesStorage = [{}];
@@ -49,8 +103,8 @@ export default function Canvas(props: unknown) {
     const paint = (event: PointerEvent) => {
         // console.log("Type", event.type);
         const bounds = canvasElem.current.getBoundingClientRect();
-        const x = Math.floor(event.clientX - bounds.left);
-        const y = Math.floor(event.clientY - bounds.top);
+        const x = Math.min(Math.max(Math.floor(event.clientX - bounds.left), 0), width.value);
+        const y = Math.min(Math.max(Math.floor(event.clientY - bounds.top), 0), height.value);
         // console.log(`Type: ${event.type} %c${x} %c${y}`, "color: red", "color: blue");
         
 
@@ -146,9 +200,28 @@ export default function Canvas(props: unknown) {
         } catch (error) {
             console.log(error);
         }
-        
+        //
+
+        document.body.addEventListener("keydown", e => {
+            switch (e.key) {
+                case "z":
+                    TOOL.setTool(TOOL.availableTools.ZOOM)
+                    canvasTool.value = TOOL.activeTool
+                    console.log(TOOL.activeTool)
+                    break;
+                case "n":
+                    TOOL.nextTool()
+                    canvasTool.value = TOOL.activeTool
+                    console.log(TOOL.activeTool)
+                    break;
+                default:
+                    break;
+            }
+        })
+
         //pointer events
         canvasElem.current.onpointerdown = (event) => {
+            if (event.button !== 0) return;
             paint(event);
 
             let wait = false;
@@ -164,7 +237,7 @@ export default function Canvas(props: unknown) {
                 }
             };
 
-            canvasElem.current.onpointerup = (event) => {
+            canvasElem.current.onpointerup, document.onpointerup = (event) => {
                 canvasElem.current.onpointermove = null;
                 canvasElem.current.onpointerup = null;
                 paint(event);
@@ -188,7 +261,22 @@ export default function Canvas(props: unknown) {
 
     return (
         <>
-            <div class="flex absolute z-10 -translate-y-[27px] border-x-2 border-t-2 border-gray-200 bg-gray-100 gap-0.5">
+            <div class="flex absolute z-10 -translate-y-[27px] border-x-2 border-t-2 border-gray-200 bg-gray-100 gap-0.5" onKeyDown={(e) => {
+                switch (e.key) {
+                    case "z":
+                        TOOL.setTool(TOOL.availableTools.ZOOM)
+                        canvasTool.value = TOOL.activeTool
+                        console.log(TOOL.activeTool)
+                        break;
+                    case "n":
+                        TOOL.nextTool()
+                        canvasTool.value = TOOL.activeTool
+                        console.log(TOOL.activeTool)
+                        break;
+                    default:
+                        break;
+                }
+            }}>
                 <input class="bg-gray-100" ref={brushColorElem} type="color" value={brushColor.value} onInput={(e) => {
                     // console.log(e.target.value);
                     brushColor.value = e.target.value;
@@ -201,6 +289,19 @@ export default function Canvas(props: unknown) {
                     if (brushSize.value <= 1 && scrollingDown) return;
                     (scrollingDown) ? brushSize.value = parseInt(brushSize.value) - 1 : brushSize.value = parseInt(brushSize.value) + 1;
                 }}/>
+                <div class="relative border-l-2 border-gray-200">
+                    <div ref={toolbarHighlighter} class="absolute transition-transform left-[5rem] w-[5rem] h-0.5 bg-sky-400 translate-y-[25px]" />
+                    <form class="flex flex-row w-60 justify-around border-b-2 border-gray-200 h-full" onInput={(e) => {
+                        TOOL.setTool(e.target.id);
+                    }}>
+                        {Object.keys(TOOL.availableTools).map((toolName) =>
+                            <>
+                                <input class="hidden" type="radio" name="tool" id={toolName} />
+                                <label class="select-none active:text-sky-500" for={toolName}>{toolName}</label>
+                            </>
+                        )}
+                    </form>
+                </div>
             </div>
             <div class="flex">
                 <canvas ref={canvasElem} class="relative flex-none border-2 border-gray-200 place-self-center" width={width.value} height={height.value} />
