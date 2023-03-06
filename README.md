@@ -1,10 +1,12 @@
-# fresh project
+# Skoetch
 
-### Usage
+!["Hello world!" drawn on the canvas and chat between two clients within the application](https://github.com/tsorak/skoetch/blob/master/skoetch_demo.gif)
+
+## Usage
 
 Start the project:
 
-```
+```sh
 deno task start
 ```
 
