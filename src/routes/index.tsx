@@ -1,10 +1,20 @@
-import { Title } from "solid-start";
+import { Title, useRouteData } from "solid-start";
 import Counter from "~/components/Counter";
 
+import { setupWebsocket } from "~/ws/websocket";
+
+export function routeData() {
+  return {
+    ws: setupWebsocket()
+  };
+}
+
 export default function Home() {
+  const { ws } = useRouteData<typeof routeData>();
+
   return (
     <main>
-      <Title>Hello World</Title>
+      <Title>{ws.statusAccessor()}</Title>
       <h1 class="text-2xl text-red-400">Hello world!</h1>
       <Counter />
       <p>
