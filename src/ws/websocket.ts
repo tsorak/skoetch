@@ -4,7 +4,22 @@ type wsStatus = "CONNECTING" | "CONNECTED" | "DISCONNECTED" | "ERROR";
 
 export function setupWebsocket() {
   const [status, setStatus] = createSignal<wsStatus>("CONNECTING");
-  let ws: WebSocket = connect();
+  type WsHandlers = Map<
+    "open" | "close" | "error" | "message",
+    ((event: CloseEvent | Event | MessageEvent) => void)[]
+  >;
+  const socketEventHandlers: WsHandlers = new Map();
+
+  function addHandler(
+    event: "open" | "close" | "error" | "message",
+    handler: (e: CloseEvent | Event | MessageEvent) => void,
+  ) {
+    if (!socketEventHandlers.has(event)) {
+      socketEventHandlers.set(event, [handler]);
+    } else {
+      socketEventHandlers.get(event)?.push(handler);
+    }
+  }
 
   function connect() {
     const conn: WebSocket = new WebSocket("ws://localhost:8080/");
@@ -17,30 +32,30 @@ export function setupWebsocket() {
   }
 
   function setupWSHandlers(socket: WebSocket) {
-    socket.onopen = () => {
-      setStatus("CONNECTED");
-    };
+    // For every handler in socketEventHandlers, run each handler on the specified event
+    socketEventHandlers.forEach((handlers, eventName) => {
+      console.log("Adding handler for event: " + eventName);
+      socket.addEventListener(eventName, (event) => {
+        console.log("Socket event triggered: " + eventName);
 
-    socket.onclose = (e) => {
-      setStatus("DISCONNECTED");
+        handlers.forEach((handler) => {
+          console.log("Running handler for event: " + eventName);
 
-      const { code, reason } = e;
-
-      if (!reason) {
-        reconnect();
-      }
-
-      console.log("Socket closed with code: " + code + " and reason: " + reason);
-    };
-
-    socket.onerror = (e) => {
-      setStatus("ERROR");
-
-      console.error(e);
-    };
+          handler(event);
+        });
+      });
+    });
 
     return socket;
   }
 
+  addHandler("open", () => {
+    setStatus("CONNECTED");
+  });
+  addHandler("close", () => setStatus("DISCONNECTED"));
+  addHandler("close", (_e) => reconnect());
+  addHandler("error", () => setStatus("ERROR"));
+
+  const ws: WebSocket = connect();
   return { socket: ws, statusAccessor: status };
 }
